@@ -55,60 +55,90 @@ export default function CamionActualizacion() {
   const [patente, setPatente] = React.useState("");
   const [camionesItem, setCamionesItem] = React.useState([]);
   const [actionButton, setActionButton] = React.useState("Guardar");
+
   const handleChangePatente = (event) => {
     setPatente(event.target.value);
-    const datosCamion = camionesItem.find(camion => camion.PATENTE_CAMION === event.target.value)
-    console.log(datosCamion)
+
+    const datosCamion = camionesItem.find(
+      (camion) => camion.PATENTE_CAMION === event.target.value
+    );
+    console.log(datosCamion);
     try {
       document.getElementById("modelo").value = datosCamion.MODELO_CAMION;
-    document.getElementById("sigla").value = datosCamion.CODIGO_MANTENCION;
-    document.getElementById("marcaCamion").value = datosCamion.MARCA_CAMION;
-    document.getElementById("color").value = datosCamion.COLOR_CAMION;
-    document.getElementById("aniofabricacion").value = datosCamion.ANO_FABRICACION_CAMION;
-    document.getElementById("kmcompra").value = datosCamion.KILOMETRAJE_COMPRA_CAMION;
-    setSelectedDate(new Date(datosCamion.FECHA_COMPRA_CAMION))
-    document.getElementById("valorcompra").value = datosCamion.VALOR_COMPRA_CAMION;
-    document.getElementById("cargaMaxima").value = datosCamion.CARGA_MAXIMA;
-    document.getElementById("observacion").value = datosCamion.OBSERVACION_CAMION;
-    document.getElementById("carter").value = datosCamion.CAPACIDAD_CARTER;
-    document.getElementById("caja").value = datosCamion.CAPACIDAD_CAJA;
-    document.getElementById("diferencial").value = datosCamion.CAPACIDAD_DIFERENCIAL;
-    document.getElementById("cajacambio").value = datosCamion.TIPO_CAJA_CAMBIO;
-    document.getElementById("tipoDiferencial").value = datosCamion.TIPO_DIFERENCIAL;
-    document.getElementById("embrague").value = datosCamion.TIPO_EMBRIAGE;
-    document.getElementById("suspencion").value = datosCamion.TIPO_SUSPENCION;
-    document.getElementById("frenodemotor").value = datosCamion.MODELO_FRENO_MOTOR;
-    document.getElementById("direccion").value = datosCamion.MODELO_DIRECCION;
-    document.getElementById("inyeccion").value = datosCamion.MODELO_INYECCION;
-    document.getElementById("sisElectrico").value = datosCamion.MODELO_SISTEMA_ELECTRICO;
-    document.getElementById("motor").value = datosCamion.NRO_CAMION;
-    document.getElementById("chasis").value = datosCamion.NRO_CHASIS;
-    document.getElementById("ejes").value = datosCamion.NRO_EJES;
-    } catch (error) {
-      
-    }
-    
+      document.getElementById("sigla").value = datosCamion.CODIGO_MANTENCION;
+      document.getElementById("marcaCamion").value = datosCamion.MARCA_CAMION;
+      document.getElementById("color").value = datosCamion.COLOR_CAMION;
+      document.getElementById("aniofabricacion").value =
+        datosCamion.ANO_FABRICACION_CAMION;
+      document.getElementById("kmcompra").value =
+        datosCamion.KILOMETRAJE_COMPRA_CAMION;
+      setSelectedDate(new Date(datosCamion.FECHA_COMPRA_CAMION));
+      document.getElementById("valorcompra").value =
+        datosCamion.VALOR_COMPRA_CAMION;
+      document.getElementById("cargaMaxima").value = datosCamion.CARGA_MAXIMA;
+      document.getElementById("observacion").value =
+        datosCamion.OBSERVACION_CAMION;
+      document.getElementById("carter").value = datosCamion.CAPACIDAD_CARTER;
+      document.getElementById("caja").value = datosCamion.CAPACIDAD_CAJA;
+      document.getElementById("diferencial").value =
+        datosCamion.CAPACIDAD_DIFERENCIAL;
+      document.getElementById("cajacambio").value =
+        datosCamion.TIPO_CAJA_CAMBIO;
+      document.getElementById("tipoDiferencial").value =
+        datosCamion.TIPO_DIFERENCIAL;
+      document.getElementById("embrague").value = datosCamion.TIPO_EMBRIAGE;
+      document.getElementById("suspencion").value = datosCamion.TIPO_SUSPENCION;
+      document.getElementById("frenodemotor").value =
+        datosCamion.MODELO_FRENO_MOTOR;
+      document.getElementById("direccion").value = datosCamion.MODELO_DIRECCION;
+      document.getElementById("inyeccion").value = datosCamion.MODELO_INYECCION;
+      document.getElementById("sisElectrico").value =
+        datosCamion.MODELO_SISTEMA_ELECTRICO;
+      document.getElementById("motor").value = datosCamion.NRO_CAMION;
+      document.getElementById("chasis").value = datosCamion.NRO_CHASIS;
+      document.getElementById("ejes").value = datosCamion.NRO_EJES;
 
+      document.getElementById("modelo").focus();
+      document.getElementById("sigla").focus();
+      document.getElementById("marcaCamion").focus();
+      document.getElementById("color").focus();
+      document.getElementById("aniofabricacion").focus();
+      document.getElementById("kmcompra").focus();
+      document.getElementById("valorcompra").focus();
+      document.getElementById("cargaMaxima").focus();
+      document.getElementById("observacion").focus();
+      document.getElementById("carter").focus();
+      document.getElementById("caja").focus();
+      document.getElementById("diferencial").focus();
+      document.getElementById("cajacambio").focus();
+      document.getElementById("tipoDiferencial").focus();
+      document.getElementById("embrague").focus();
+      document.getElementById("suspencion").focus();
+      document.getElementById("frenodemotor").focus();
+      document.getElementById("direccion").focus();
+      document.getElementById("inyeccion").focus();
+      document.getElementById("sisElectrico").focus();
+      document.getElementById("motor").focus();
+      document.getElementById("chasis").focus();
+      document.getElementById("ejes").focus();
+    } catch (error) {}
   };
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
   useEffect(() => {
-    
-
     cargarCamiones();
   }, []);
   const cargarCamiones = async () => {
     const { data } = await Axios.get("http://localhost:4000/api/camion/");
     setCamionesItem(data.data);
     return null;
-  };  
+  };
   const onSubmit = (data, e) => {
     var mensajeDatosFaltantes = "";
-    
-    if (data.patente === undefined)
-      mensajeDatosFaltantes += " - Falta ingresar patente de camión.<br>";
+    console.log(data);
+
     if (data.modelo === undefined)
       mensajeDatosFaltantes += " - Falta ingresar modelo de camión.<br>";
     if (data.sigla === undefined)
@@ -159,6 +189,8 @@ export default function CamionActualizacion() {
 
     switch (actionButton) {
       case "Guardar":
+        if (data.patente === undefined)
+          mensajeDatosFaltantes += " - Falta ingresar patente de camión.<br>";
         if (mensajeDatosFaltantes.length > 0) {
           Swal.fire({
             icon: "warning",
@@ -209,7 +241,7 @@ export default function CamionActualizacion() {
                   icon: "success",
                 });
               }
-              cargarCamiones()
+              cargarCamiones();
               e.target.reset();
             })
             .catch((error) => {
@@ -235,43 +267,71 @@ export default function CamionActualizacion() {
             },
           });
         } else {
-          if(patente !== ""){
+          if (patente !== "") {
             Axios.put("http://localhost:4000/api/camion/" + patente, {
-            PATENTE_CAMION: data.patente,
-            MODELO_CAMION: data.modelo,
-            CODIGO_MANTENCION: data.sigla,
-            MARCA_CAMION: data.marcaCamion,
-            COLOR_CAMION: data.color,
-            ANO_FABRICACION_CAMION: data.aniofabricacion,
-            KILOMETRAJE_COMPRA_CAMION: data.kmcompra,
-            FECHA_COMPRA_CAMION: selectedDate,
-            VALOR_COMPRA_CAMION: data.valorcompra,
-            CARGA_MAXIMA: data.cargaMaxima,
-            OBSERVACION_CAMION: data.observacion,
-            CAPACIDAD_CARTER: data.carter,
-            CAPACIDAD_CAJA: data.caja,
-            CAPACIDAD_DIFERENCIAL: data.diferencial,
-            TIPO_CAJA_CAMBIO: data.cajacambio,
-            TIPO_DIFERENCIAL: data.tipoDiferencial,
-            TIPO_EMBRIAGE: data.embrague,
-            TIPO_SUSPENCION: data.suspencion,
-            MODELO_FRENO_MOTOR: data.frenodemotor,
-            MODELO_DIRECCION: data.direccion,
-            MODELO_INYECCION: data.inyeccion,
-            MODELO_SISTEMA_ELECTRICO: data.sisElectrico,
-            NRO_CAMION: data.motor,
-            NRO_CHASIS: data.chasis,
-            NRO_EJES: data.ejes,
-          })
-            .then((response) => {
-              if (response.status === 200) {
+              PATENTE_CAMION: data.patente,
+              MODELO_CAMION: data.modelo,
+              CODIGO_MANTENCION: data.sigla,
+              MARCA_CAMION: data.marcaCamion,
+              COLOR_CAMION: data.color,
+              ANO_FABRICACION_CAMION: data.aniofabricacion,
+              KILOMETRAJE_COMPRA_CAMION: data.kmcompra,
+              FECHA_COMPRA_CAMION: selectedDate,
+              VALOR_COMPRA_CAMION: data.valorcompra,
+              CARGA_MAXIMA: data.cargaMaxima,
+              OBSERVACION_CAMION: data.observacion,
+              CAPACIDAD_CARTER: data.carter,
+              CAPACIDAD_CAJA: data.caja,
+              CAPACIDAD_DIFERENCIAL: data.diferencial,
+              TIPO_CAJA_CAMBIO: data.cajacambio,
+              TIPO_DIFERENCIAL: data.tipoDiferencial,
+              TIPO_EMBRIAGE: data.embrague,
+              TIPO_SUSPENCION: data.suspencion,
+              MODELO_FRENO_MOTOR: data.frenodemotor,
+              MODELO_DIRECCION: data.direccion,
+              MODELO_INYECCION: data.inyeccion,
+              MODELO_SISTEMA_ELECTRICO: data.sisElectrico,
+              NRO_CAMION: data.motor,
+              NRO_CHASIS: data.chasis,
+              NRO_EJES: data.ejes,
+            })
+              .then((response) => {
+                if (response.status === 200) {
+                  Swal.fire({
+                    title: "Camion modificado",
+                    text: response.data.message,
+                    icon: "success",
+                  });
+                }
+              })
+              .catch((error) => {
                 Swal.fire({
-                  title: "Camion modificado",
-                  text: response.data.message,
-                  icon: "success",
+                  title: "Cuidado !",
+                  text: "Ocurrio un error inesperado",
+                  icon: "warning",
                 });
-              }
-              
+              });
+          } else {
+            Swal.fire({
+              title: "Error !",
+              text: "Debe seleccionar algun camión",
+              icon: "error",
+            });
+          }
+        }
+
+        break;
+      case "Eliminar":
+        if (patente !== "") {
+          Axios.delete("http://localhost:4000/api/camion/" + patente)
+            .then((response) => {
+              Swal.fire({
+                title: "Camion eliminado",
+                text: response.data.message,
+                icon: "success",
+              });
+              cargarCamiones();
+              e.target.reset();
             })
             .catch((error) => {
               Swal.fire({
@@ -280,37 +340,12 @@ export default function CamionActualizacion() {
                 icon: "warning",
               });
             });
-              
-          }else{
-            Swal.fire({
-              title: "Error !",
-              text: "Debe seleccionar algun camión",
-              icon: "error",
-            });
-          }
-          
-        }
-
-        break;
-      case "Eliminar":
-        if(patente !== ""){
-          Axios.delete("http://localhost:4000/api/camion/" + patente)
-          .then((response) =>{
-            Swal.fire({
-              title: "Camion eliminado",
-              text: response.data.message,
-              icon: "success",
-            });
-            cargarCamiones()
-            e.target.reset();
-          })
-          .catch((error) =>{
-            Swal.fire({
-              title: "Error !",
-              text: "Debe seleccionar algun camión",
-              icon: "error",
-            });
-          })
+        } else {
+          Swal.fire({
+            title: "Error !",
+            text: "Debe seleccionar algun camión",
+            icon: "error",
+          });
         }
         break;
       default:
@@ -420,9 +455,12 @@ export default function CamionActualizacion() {
               >
                 {!switchCombo ? (
                   <TextField
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     id="patente"
                     name="patente"
-                    {...register("patente", { required: false })}
+                    {...register("patente")}
                     fullWidth
                     label="Patente"
                     variant="outlined"
@@ -461,34 +499,47 @@ export default function CamionActualizacion() {
                 )}
 
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   id="sigla"
-                  {...register("sigla", { required: false })}
+                  name="sigla"
+                  autoFocus
+                  defaultValue=""
+                  {...register("sigla")}
                   className={classes.espaciadoInput}
                   fullWidth
                   label="Sigla"
                   variant="outlined"
                 />
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   id="color"
-                  {...register("color", { required: false })}
+                  name="color"
+                  defaultValue=""
+                  {...register("color")}
                   className={classes.espaciadoInput}
                   fullWidth
                   label="Color"
                   variant="outlined"
                 />
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   type="number"
                   id="kmcompra"
-                  {...register("kmcompra", { required: false })}
+                  name="kmcompra"
+                  defaultValue=""
+                  {...register("kmcompra")}
                   className={classes.espaciadoInput}
                   fullWidth
                   label="Km. de compra"
                   variant="outlined"
                 />
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   type="number"
+                  name="valorcompra"
+                  defaultValue=""
                   id="valorcompra"
-                  {...register("valorcompra", { required: false })}
+                  {...register("valorcompra")}
                   className={classes.espaciadoInput}
                   fullWidth
                   label="Valor de compra"
@@ -504,24 +555,27 @@ export default function CamionActualizacion() {
                 justify="center"
               >
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   id="modelo"
-                  {...register("modelo", { required: false })}
+                  {...register("modelo")}
                   fullWidth
                   label="Modelo"
                   variant="outlined"
                 />
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   id="marcaCamion"
-                  {...register("marcaCamion", { required: false })}
+                  {...register("marcaCamion")}
                   className={classes.espaciadoInput}
                   fullWidth
                   label="Marca"
                   variant="outlined"
                 />
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   type="number"
                   id="aniofabricacion"
-                  {...register("aniofabricacion", { required: false })}
+                  {...register("aniofabricacion")}
                   className={classes.espaciadoInput}
                   fullWidth
                   label="Año fabricación"
@@ -546,9 +600,10 @@ export default function CamionActualizacion() {
                 </MuiPickersUtilsProvider>
 
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   type="number"
                   id="cargaMaxima"
-                  {...register("cargaMaxima", { required: false })}
+                  {...register("cargaMaxima")}
                   className={classes.espaciadoInput}
                   fullWidth
                   label="Carga Maxima (ton) "
@@ -564,8 +619,9 @@ export default function CamionActualizacion() {
                 justify="center"
               >
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   id="observacion"
-                  {...register("observacion", { required: false })}
+                  {...register("observacion")}
                   label="Observación"
                   multiline
                   rows={6}
@@ -599,7 +655,7 @@ export default function CamionActualizacion() {
                     <OutlinedInput
                       type="number"
                       id="carter"
-                      {...register("carter", { required: false })}
+                      {...register("carter")}
                       endAdornment={
                         <InputAdornment position="end">Lts</InputAdornment>
                       }
@@ -615,7 +671,7 @@ export default function CamionActualizacion() {
                     <OutlinedInput
                       type="number"
                       id="caja"
-                      {...register("caja", { required: false })}
+                      {...register("caja")}
                       className={classes.outlinedInput}
                       endAdornment={
                         <InputAdornment position="end">Lts</InputAdornment>
@@ -632,7 +688,7 @@ export default function CamionActualizacion() {
                     <OutlinedInput
                       type="number"
                       id="diferencial"
-                      {...register("diferencial", { required: false })}
+                      {...register("diferencial")}
                       className={classes.outlinedInput}
                       endAdornment={
                         <InputAdornment position="end">Lts</InputAdornment>
@@ -676,8 +732,9 @@ export default function CamionActualizacion() {
                         justify="center"
                       >
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="cajacambio"
-                          {...register("cajacambio", { required: false })}
+                          {...register("cajacambio")}
                           label="Caja de Cambio"
                           variant="outlined"
                           fullWidth
@@ -685,8 +742,9 @@ export default function CamionActualizacion() {
                         />
 
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="embrague"
-                          {...register("embrague", { required: false })}
+                          {...register("embrague")}
                           fullWidth
                           className={classes.espaciadoInput}
                           label="Embrague"
@@ -701,16 +759,18 @@ export default function CamionActualizacion() {
                         alignItems="center"
                       >
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="tipoDiferencial"
-                          {...register("tipoDiferencial", { required: false })}
+                          {...register("tipoDiferencial")}
                           fullWidth
                           className={classes.espaciadoLeft}
                           label="Diferencial"
                           variant="outlined"
                         />
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="suspencion"
-                          {...register("suspencion", { required: false })}
+                          {...register("suspencion")}
                           fullWidth
                           className={classes.espaciadoLeft}
                           label="Suspención"
@@ -746,8 +806,9 @@ export default function CamionActualizacion() {
                         justify="center"
                       >
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="frenodemotor"
-                          {...register("frenodemotor", { required: false })}
+                          {...register("frenodemotor")}
                           label="Freno de motor"
                           variant="outlined"
                           fullWidth
@@ -755,8 +816,9 @@ export default function CamionActualizacion() {
                         />
 
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="inyeccion"
-                          {...register("inyeccion", { required: false })}
+                          {...register("inyeccion")}
                           fullWidth
                           className={classes.espaciadoInput}
                           label="Inyección"
@@ -771,16 +833,18 @@ export default function CamionActualizacion() {
                         alignItems="center"
                       >
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="direccion"
-                          {...register("direccion", { required: false })}
+                          {...register("direccion")}
                           fullWidth
                           className={classes.espaciadoLeft}
                           label="Dirección"
                           variant="outlined"
                         />
                         <TextField
+                          InputLabelProps={{ shrink: true }}
                           id="sisElectrico"
-                          {...register("sisElectrico", { required: false })}
+                          {...register("sisElectrico")}
                           fullWidth
                           className={classes.espaciadoLeft}
                           label="Sistema Eléctrico"
@@ -819,8 +883,9 @@ export default function CamionActualizacion() {
                     alignItems="center"
                   >
                     <TextField
+                      InputLabelProps={{ shrink: true }}
                       id="motor"
-                      {...register("motor", { required: false })}
+                      {...register("motor")}
                       fullWidth
                       className={classes.espaciadoInput}
                       label="Motor"
@@ -835,8 +900,9 @@ export default function CamionActualizacion() {
                     alignItems="center"
                   >
                     <TextField
+                      InputLabelProps={{ shrink: true }}
                       id="chasis"
-                      {...register("chasis", { required: false })}
+                      {...register("chasis")}
                       fullWidth
                       className={classes.espaciadoLeft}
                       label="Chasis"
@@ -851,9 +917,10 @@ export default function CamionActualizacion() {
                     alignItems="center"
                   >
                     <TextField
+                      InputLabelProps={{ shrink: true }}
                       type="number"
                       id="ejes"
-                      {...register("ejes", { required: false })}
+                      {...register("ejes")}
                       fullWidth
                       className={classes.espaciadoLeft}
                       label="Ejes"

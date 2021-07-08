@@ -588,7 +588,7 @@ export default function CamionActualizacion() {
                       id="fechacompra"
                       className={classes.espaciadoInput}
                       label="Fecha compra"
-                      format="MM/dd/yyyy"
+                      format="dd/mm/yyyy"
                       fullWidth
                       value={selectedDate}
                       onChange={handleDateChange}

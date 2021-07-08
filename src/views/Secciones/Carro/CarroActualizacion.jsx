@@ -148,7 +148,7 @@ export default function CarroActualizacion() {
       mensajeDatosFaltantes += " - Falta ingresar tipo de carro.<br>";
     if (data.observacion === "")
       mensajeDatosFaltantes += " - Falta ingresar observación.<br>";
-    console.log(tipo);
+   
     switch (actionButton) {
       case "Guardar":
         console.log("guardar");

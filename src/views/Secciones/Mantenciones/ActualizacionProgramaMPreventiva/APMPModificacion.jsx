@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -10,16 +10,18 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
-import Grow from '@material-ui/core/Grow';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faTools} from "@fortawesome/free-solid-svg-icons";
+import { faTools } from "@fortawesome/free-solid-svg-icons";
+import { useForm } from "react-hook-form";
+import Axios from "axios";
+import Swal from "sweetalert2";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   container: {
-    display: 'flex',
+    display: "flex",
   },
   paper: {
     padding: theme.spacing(3),
@@ -50,188 +52,264 @@ const useStyles = makeStyles((theme) => ({
 
 export default function APMPModificacion() {
   const classes = useStyles();
-  const [camion, setCamion] = React.useState("");
-  const [checkedGrow, setCheckedGrow] = React.useState(true);
+  const [mantencion, setMantencion] = React.useState("");
+  const { register, handleSubmit } = useForm();
+  const [mantencioneNormalItem, setMantencioneNormal] = React.useState([]);
+  const [programaMantencionItem, setProgramaMantencion] = React.useState([]);
+  
+  
+  const handleChangeMantencion = (event) => {
+    setMantencion(event.target.value);
 
-  const handleChangeGrow = () => {
-    setCheckedGrow(checkedGrow)
-    //setCheckedFade((prev) => !prev);
+    try {
+      const datosMantencionNormal = mantencioneNormalItem.find(
+        (mantencionM) => mantencionM.CODIGO_MANTENCION === event.target.value
+      );
+
+      document.getElementById("programa").value = datosMantencionNormal.OBSERVACION_MANTENCION;
+      document.getElementById("programa").focus()
+
+
+      const datosProgramaMantencion = programaMantencionItem.find(
+        (programaM) => programaM.CODIGO_MANTENCION === event.target.value
+      );
+
+      document.getElementById("elementoMod").value = datosProgramaMantencion.ELEMENTO
+      document.getElementById("tipoMod").value = datosProgramaMantencion.TIPO
+      document.getElementById("accionMod").value = datosProgramaMantencion.MANTENCION
+      document.getElementById("kilometrajeMod").value = datosProgramaMantencion.KILOMETRAJE_PROGRAMADO
+
+
+      document.getElementById("elementoMod").focus()
+      document.getElementById("tipoMod").focus()
+      document.getElementById("accionMod").focus()
+      document.getElementById("kilometrajeMod").focus()
+    } catch (error) {
+      
+    }
+    
+    
+
   };
 
-  const handleChangeCamion = (event) => {
-    setCamion(event.target.value);
+  useEffect(() => {
+    cargarMantencionNormal();
+  }, []);
+  const cargarMantencionNormal = async () => {
+    const { data } = await Axios.get("http://localhost:4000/api/mantencionnormal/");
+    setMantencioneNormal(data.data);
+    return null;
   };
+
+  useEffect(() => {
+    cargarProgramaMantencion();
+  }, []);
+  const cargarProgramaMantencion = async () => {
+    const { data } = await Axios.get("http://localhost:4000/api/programademantencion/");
+    setProgramaMantencion(data.data);
+    return null;
+  };
+
+
+  const onSubmit = (data, e) => {
+    var mensajeDatosFaltantes = "";
+    if (data.kilometrajeNew === undefined)
+      mensajeDatosFaltantes += " - Falta ingresar kilometraje.<br>";
+    if (data.programa === undefined)
+      mensajeDatosFaltantes += " - Falta ingresar descripción.<br>";
+
+      if (mensajeDatosFaltantes.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "Datos vacios.",
+          html:
+            "<div style='text-align: left;'>" + mensajeDatosFaltantes + "</div>",
+          customClass: {
+            popup: "format-pre",
+          },
+        });
+      } else {
+        //grabar
+        Axios.put("http://localhost:4000/api/mantencionnormal/" + mantencion, {
+         
+          OBSERVACION_MANTENCION: data.programa,
+        })
+          .then((response) => {
+            if (response.status === 200) {  
+              Axios.put("http://localhost:4000/api/programademantencion/" + mantencion ,  {
+                KILOMETRAJE_PROGRAMADO: data.kilometrajeNew,
+                FECHA_DE_MANTENCION: new Date(),
+              })
+                .then((response) => {
+                  console.log(response);
+                  if (response.status === 200) {
+                    Swal.fire({
+                      title: "Programa de mantención",
+                      text: response.data.message,
+                      icon: "success",
+                    });
+                  }
+                })
+                .catch((error) => {
+                  Swal.fire({
+                    title: "Error !",
+                    text: error.response.data.message,
+                    icon: "error",
+                  });
+                });
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: "Error !",
+              text: error.response.data.message,
+              icon: "error",
+            });
+          });
+      }
+  }
+
   return (
     <div className={classes.root}>
-   
-     
-          <Grid container spacing={0}>
-            <Grid item xs={12}>
-            <Grow in={handleChangeGrow}   style={{ transformOrigin: '0 0 0' }}
-            {...(checkedGrow ? { timeout: 1000 } : {})}>
-              <Paper elevation={3} className={classes.paper}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Camión</InputLabel>
-                  <Select
-                    labelId="camion"
-                    id="camion"
-                    value={camion}
-                    onChange={handleChangeCamion}
-                    label="Camión"
-                  >
-                    <MenuItem value="">
-                      <em></em>
-                    </MenuItem>
-                    <MenuItem value={10}>dx1234</MenuItem>
-                    <MenuItem value={20}>dx2452</MenuItem>
-                    <MenuItem value={30}>dx6234</MenuItem>
-                  </Select>
-                </FormControl>
-                <TextField
-                  id="programa"
-                  label="Programa"
-                  className={classes.espaciadoInput}
-                  fullWidth
-                  defaultValue=""
-                  variant="outlined"
-                />
-                <Button
-                  disabled
-                  className={classes.boton}
-                  variant="contained"
-                  color="primary"
-                >
-                  Grabar nueva descripción
-                </Button>
-              </Paper>
-              </Grow>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <Paper elevation={3} className={classes.paper}>
+            <FormControl
+              variant="outlined"
+              fullWidth
+              className={classes.formControl}
+            >
+              <InputLabel id="primerCamion">Patente Mantencion</InputLabel>
+              <Select
+                labelId="primerCamion"
+                id="primerCamion"
+                value={mantencion}
+                onChange={handleChangeMantencion}
+                label="Patente Mantencion"
+              >
+                <MenuItem value="">
+                  <em></em>
+                </MenuItem>
+                {mantencioneNormalItem
+                  ? mantencioneNormalItem.map((item, index) => {
+                      return (
+                        <MenuItem
+                          key={item.CODIGO_MANTENCION}
+                          value={item.CODIGO_MANTENCION}
+                        >
+                          {item.CODIGO_MANTENCION}
+                        </MenuItem>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
+            <TextField
+            InputLabelProps={{ shrink: true }}
+            id="programa"
+            {...register("programa")}
+            className={classes.espaciadoInput}
+            label="Programa"
+            
+            multiline
+            rows={6}
+            fullWidth
+            defaultValue=""
+            variant="outlined"
+          />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} className={classes.paper}>
+            <Typography variant="h6" noWrap>
+              Modificación de Mantención
+            </Typography>
+            listado
+            <Grid container>
+              <Grid item xs={6} spacing={1}>
+                <Box m={0.5}>
+                  <TextField
+                  InputLabelProps={{ shrink: true }}
+                    id="elementoMod"
+                    {...register("elementoMod")}
+                    disabled
+                    label="Elemento"
+                    className={classes.espaciadoInput}
+                    fullWidth
+                    variant="outlined"
+                  />
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    id="tipoMod"
+                    {...register("tipoMod")}
+                    disabled
+                    label="Tipo"
+                    className={classes.espaciadoInput}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={6} spacing={1}>
+                <Box m={0.5}>
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    id="accionMod"
+                    {...register("accionMod")}
+                    disabled
+                    label="Acción"
+                    className={classes.espaciadoInput}
+                    fullWidth
+                    variant="outlined"
+                  />
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    id="kilometrajeMod"
+                    {...register("kilometrajeMod")}
+                    disabled
+                    label="Kilometraje Programa"
+                    className={classes.espaciadoInput}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </Box>
+              </Grid>
+             
             </Grid>
-            <Grid item xs={7}>
-            <Grow in={handleChangeGrow}   style={{ transformOrigin: '0 0 0' }}
-            {...(checkedGrow ? { timeout: 1500 } : {})}>
-              <Paper elevation={3} className={classes.paper}>
-                <Typography variant="h6" noWrap>
-                  Modificación de Mantención
-                </Typography>
-                listado
-                <Grid container>
-                  <Grid item xs={6} spacing={1}>
-                    <Box m={0.5}>
-                      <TextField
-                        id="elementoMod"
-                        label="Elemento"
-                        className={classes.espaciadoInput}
-                        fullWidth
-                        variant="outlined"
-                      />
-                      <TextField
-                        id="tipoMod"
-                        label="Tipo"
-                        className={classes.espaciadoInput}
-                        fullWidth
-                        variant="outlined"
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={6} spacing={1}>
-                    <Box m={0.5}>
-                      <TextField
-                        id="accionMod"
-                        label="Acción"
-                        className={classes.espaciadoInput}
-                        fullWidth
-                        variant="outlined"
-                      />
-                      <TextField
-                        id="kilometrajeMod"
-                        label="Kilometraje Programa"
-                        className={classes.espaciadoInput}
-                        fullWidth
-                        variant="outlined"
-                      />
-                    </Box>
-                  </Grid>
-                  <Box m={0.5}>
-                    <Button
-                      disabled
-                      className={classes.boton}
-                      variant="contained"
-                      fullWidth
-                      color="primary"
-                    >
-                      Grabar modificación
-                    </Button>
-                  </Box>
-                  <Box m={0.5}>
-                    <Button
-                      disabled
-                      className={classes.boton}
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                    >
-                      Eliminar elemento
-                    </Button>
-                  </Box>
-                </Grid>
-              </Paper>
-              </Grow>
-            </Grid>
-            <Grid item xs={5}>
-            <Grow in={handleChangeGrow}   style={{ transformOrigin: '0 0 0' }}
-            {...(checkedGrow ? { timeout: 2500 } : {})}>
-              <Paper elevation={3} className={classes.paper}>
-              
-                <Typography variant="h6" noWrap>
-                <ListItemIcon className={classes.menuItemIcon}>
-              <FontAwesomeIcon icon={faTools} size="xs" />
-              </ListItemIcon>Ingreso Nueva Mantención
-                </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} className={classes.paper}>
+            <Typography variant="h6" noWrap>
+              <ListItemIcon className={classes.menuItemIcon}>
+                <FontAwesomeIcon icon={faTools} size="xs" />
+              </ListItemIcon>
+              Ingreso Nueva Mantención
+            </Typography>
 
-                <TextField
-                  id="elementoMod"
-                  label="Elemento"
-                  className={classes.espaciadoInput}
-                  fullWidth
-                  variant="outlined"
-                />
-                <TextField
-                  id="tipoMod"
-                  label="Tipo"
-                  className={classes.espaciadoInput}
-                  fullWidth
-                  variant="outlined"
-                />
-
-                <TextField
-                  id="accionMod"
-                  label="Acción"
-                  className={classes.espaciadoInput}
-                  fullWidth
-                  variant="outlined"
-                />
-                <TextField
-                  id="kilometrajeMod"
-                  label="Kilometraje Programa"
-                  className={classes.espaciadoInput}
-                  fullWidth
-                  variant="outlined"
-                />
-                <Button
-                      disabled
-                      className={classes.boton}
-                      variant="contained"
-                      fullWidth
-                      color="primary"
-                    >
-                      Grabar Ingreso
-                    </Button>
-              </Paper>
-              </Grow>
-            </Grid>
-          </Grid>
-        
-      </div>
-
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              id="kilometrajeNew"
+              {...register("kilometrajeNew")}
+              label="Kilometraje Programa"
+              className={classes.espaciadoInput}
+              fullWidth
+              variant="outlined"
+            />
+            <Button
+              type="submit"
+              className={classes.boton}
+              variant="contained"
+              fullWidth
+              color="primary"
+            >
+              Grabar Ingreso
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
+      </form>
+    </div>
   );
 }

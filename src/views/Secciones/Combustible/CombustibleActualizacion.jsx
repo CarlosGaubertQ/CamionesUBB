@@ -218,7 +218,7 @@ export default function CombustibleActualizacion() {
       petroleo = 0;
       bencina = 1;
     }
-    console.log(selectedDate);
+   
     switch (actionButton) {
       case "Guardar":
         if (data.numBoleta === "" || data.numBoleta === undefined)
@@ -332,32 +332,47 @@ export default function CombustibleActualizacion() {
         }
         break;
       case "Eliminar":
-        if (boletas !== "") {
-          Axios.delete("http://localhost:4000/api/boletacombustible/" + boletas)
-            .then((response) => {
-              Swal.fire({
-                title: "Boleta eliminada",
-                text: response.data.message,
-                icon: "success",
-              });
-              cargarCamiones();
-              cargarBoletas();
-              reset();
-            })
-            .catch((error) => {
-              Swal.fire({
-                title: "Cuidado !",
-                text: "Ocurrio un error inesperado",
-                icon: "warning",
-              });
-            });
-        } else {
+          if (mensajeDatosFaltantes.length > 0) {
           Swal.fire({
-            title: "Error !",
-            text: "Debe seleccionar alguna boleta",
-            icon: "error",
+            icon: "warning",
+            title: "Datos vacios.",
+            html:
+              "<div style='text-align: left;'>" +
+              mensajeDatosFaltantes +
+              "</div>",
+            customClass: {
+              popup: "format-pre",
+            },
           });
+        } else {
+          if (boletas !== "") {
+            Axios.delete("http://localhost:4000/api/boletacombustible/" + boletas)
+              .then((response) => {
+                Swal.fire({
+                  title: "Boleta eliminada",
+                  text: response.data.message,
+                  icon: "success",
+                });
+                cargarCamiones();
+                cargarBoletas();
+                reset();
+              })
+              .catch((error) => {
+                Swal.fire({
+                  title: "Cuidado !",
+                  text: "Ocurrio un error inesperado",
+                  icon: "warning",
+                });
+              });
+          } else {
+            Swal.fire({
+              title: "Error !",
+              text: "Debe seleccionar alguna boleta",
+              icon: "error",
+            });
+          }
         }
+        
         break;
       default:
         break;

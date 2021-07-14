@@ -218,7 +218,7 @@ export default function CombustibleActualizacion() {
       petroleo = 0;
       bencina = 1;
     }
-   
+
     switch (actionButton) {
       case "Guardar":
         if (data.numBoleta === "" || data.numBoleta === undefined)
@@ -332,7 +332,7 @@ export default function CombustibleActualizacion() {
         }
         break;
       case "Eliminar":
-          if (mensajeDatosFaltantes.length > 0) {
+        if (mensajeDatosFaltantes.length > 0) {
           Swal.fire({
             icon: "warning",
             title: "Datos vacios.",
@@ -346,7 +346,9 @@ export default function CombustibleActualizacion() {
           });
         } else {
           if (boletas !== "") {
-            Axios.delete("http://localhost:4000/api/boletacombustible/" + boletas)
+            Axios.delete(
+              "http://localhost:4000/api/boletacombustible/" + boletas
+            )
               .then((response) => {
                 Swal.fire({
                   title: "Boleta eliminada",
@@ -372,7 +374,7 @@ export default function CombustibleActualizacion() {
             });
           }
         }
-        
+
         break;
       default:
         break;

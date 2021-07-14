@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -56,8 +56,7 @@ export default function APMPModificacion() {
   const { register, handleSubmit } = useForm();
   const [mantencioneNormalItem, setMantencioneNormal] = React.useState([]);
   const [programaMantencionItem, setProgramaMantencion] = React.useState([]);
-  
-  
+
   const handleChangeMantencion = (event) => {
     setMantencion(event.target.value);
 
@@ -66,37 +65,36 @@ export default function APMPModificacion() {
         (mantencionM) => mantencionM.CODIGO_MANTENCION === event.target.value
       );
 
-      document.getElementById("programa").value = datosMantencionNormal.OBSERVACION_MANTENCION;
-      document.getElementById("programa").focus()
-
+      document.getElementById("programa").value =
+        datosMantencionNormal.OBSERVACION_MANTENCION;
+      document.getElementById("programa").focus();
 
       const datosProgramaMantencion = programaMantencionItem.find(
         (programaM) => programaM.CODIGO_MANTENCION === event.target.value
       );
 
-      document.getElementById("elementoMod").value = datosProgramaMantencion.ELEMENTO
-      document.getElementById("tipoMod").value = datosProgramaMantencion.TIPO
-      document.getElementById("accionMod").value = datosProgramaMantencion.MANTENCION
-      document.getElementById("kilometrajeMod").value = datosProgramaMantencion.KILOMETRAJE_PROGRAMADO
+      document.getElementById("elementoMod").value =
+        datosProgramaMantencion.ELEMENTO;
+      document.getElementById("tipoMod").value = datosProgramaMantencion.TIPO;
+      document.getElementById("accionMod").value =
+        datosProgramaMantencion.MANTENCION;
+      document.getElementById("kilometrajeMod").value =
+        datosProgramaMantencion.KILOMETRAJE_PROGRAMADO;
 
-
-      document.getElementById("elementoMod").focus()
-      document.getElementById("tipoMod").focus()
-      document.getElementById("accionMod").focus()
-      document.getElementById("kilometrajeMod").focus()
-    } catch (error) {
-      
-    }
-    
-    
-
+      document.getElementById("elementoMod").focus();
+      document.getElementById("tipoMod").focus();
+      document.getElementById("accionMod").focus();
+      document.getElementById("kilometrajeMod").focus();
+    } catch (error) {}
   };
 
   useEffect(() => {
     cargarMantencionNormal();
   }, []);
   const cargarMantencionNormal = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/mantencionnormal/");
+    const { data } = await Axios.get(
+      "http://localhost:4000/api/mantencionnormal/"
+    );
     setMantencioneNormal(data.data);
     return null;
   };
@@ -105,11 +103,12 @@ export default function APMPModificacion() {
     cargarProgramaMantencion();
   }, []);
   const cargarProgramaMantencion = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/programademantencion/");
+    const { data } = await Axios.get(
+      "http://localhost:4000/api/programademantencion/"
+    );
     setProgramaMantencion(data.data);
     return null;
   };
-
 
   const onSubmit = (data, e) => {
     var mensajeDatosFaltantes = "";
@@ -118,197 +117,199 @@ export default function APMPModificacion() {
     if (data.programa === undefined)
       mensajeDatosFaltantes += " - Falta ingresar descripción.<br>";
 
-      if (mensajeDatosFaltantes.length > 0) {
-        Swal.fire({
-          icon: "warning",
-          title: "Datos vacios.",
-          html:
-            "<div style='text-align: left;'>" + mensajeDatosFaltantes + "</div>",
-          customClass: {
-            popup: "format-pre",
-          },
-        });
-      } else {
-        //grabar
-        Axios.put("http://localhost:4000/api/mantencionnormal/" + mantencion, {
-         
-          OBSERVACION_MANTENCION: data.programa,
-        })
-          .then((response) => {
-            if (response.status === 200) {  
-              Axios.put("http://localhost:4000/api/programademantencion/" + mantencion ,  {
+    if (mensajeDatosFaltantes.length > 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Datos vacios.",
+        html:
+          "<div style='text-align: left;'>" + mensajeDatosFaltantes + "</div>",
+        customClass: {
+          popup: "format-pre",
+        },
+      });
+    } else {
+      //grabar
+      Axios.put("http://localhost:4000/api/mantencionnormal/" + mantencion, {
+        OBSERVACION_MANTENCION: data.programa,
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            Axios.put(
+              "http://localhost:4000/api/programademantencion/" + mantencion,
+              {
                 KILOMETRAJE_PROGRAMADO: data.kilometrajeNew,
                 FECHA_DE_MANTENCION: new Date(),
-              })
-                .then((response) => {
-                  console.log(response);
-                  if (response.status === 200) {
-                    Swal.fire({
-                      title: "Programa de mantención",
-                      text: response.data.message,
-                      icon: "success",
-                    });
-                  }
-                })
-                .catch((error) => {
+              }
+            )
+              .then((response) => {
+                console.log(response);
+                if (response.status === 200) {
                   Swal.fire({
-                    title: "Error !",
-                    text: error.response.data.message,
-                    icon: "error",
+                    title: "Programa de mantención",
+                    text: response.data.message,
+                    icon: "success",
                   });
+                }
+                cargarMantencionNormal();
+                cargarProgramaMantencion();
+              })
+              .catch((error) => {
+                Swal.fire({
+                  title: "Error !",
+                  text: error.response.data.message,
+                  icon: "error",
                 });
-            }
-          })
-          .catch((error) => {
-            Swal.fire({
-              title: "Error !",
-              text: error.response.data.message,
-              icon: "error",
-            });
+              });
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error !",
+            text: error.response.data.message,
+            icon: "error",
           });
-      }
-  }
+        });
+    }
+  };
 
   return (
     <div className={classes.root}>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <Paper elevation={3} className={classes.paper}>
-            <FormControl
-              variant="outlined"
-              fullWidth
-              className={classes.formControl}
-            >
-              <InputLabel id="primerCamion">Patente Mantencion</InputLabel>
-              <Select
-                labelId="primerCamion"
-                id="primerCamion"
-                value={mantencion}
-                onChange={handleChangeMantencion}
-                label="Patente Mantencion"
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paper}>
+              <FormControl
+                variant="outlined"
+                fullWidth
+                className={classes.formControl}
               >
-                <MenuItem value="">
-                  <em></em>
-                </MenuItem>
-                {mantencioneNormalItem
-                  ? mantencioneNormalItem.map((item, index) => {
-                      return (
-                        <MenuItem
-                          key={item.CODIGO_MANTENCION}
-                          value={item.CODIGO_MANTENCION}
-                        >
-                          {item.CODIGO_MANTENCION}
-                        </MenuItem>
-                      );
-                    })
-                  : null}
-              </Select>
-            </FormControl>
-            <TextField
-            InputLabelProps={{ shrink: true }}
-            id="programa"
-            {...register("programa")}
-            className={classes.espaciadoInput}
-            label="Programa"
-            
-            multiline
-            rows={6}
-            fullWidth
-            defaultValue=""
-            variant="outlined"
-          />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3} className={classes.paper}>
-            <Typography variant="h6" noWrap>
-              Modificación de Mantención
-            </Typography>
-            listado
-            <Grid container>
-              <Grid item xs={6} spacing={1}>
-                <Box m={0.5}>
-                  <TextField
-                  InputLabelProps={{ shrink: true }}
-                    id="elementoMod"
-                    {...register("elementoMod")}
-                    disabled
-                    label="Elemento"
-                    className={classes.espaciadoInput}
-                    fullWidth
-                    variant="outlined"
-                  />
-                  <TextField
-                    InputLabelProps={{ shrink: true }}
-                    id="tipoMod"
-                    {...register("tipoMod")}
-                    disabled
-                    label="Tipo"
-                    className={classes.espaciadoInput}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </Box>
+                <InputLabel id="primerCamion">Patente Mantencion</InputLabel>
+                <Select
+                  labelId="primerCamion"
+                  id="primerCamion"
+                  value={mantencion}
+                  onChange={handleChangeMantencion}
+                  label="Patente Mantencion"
+                >
+                  <MenuItem value="">
+                    <em></em>
+                  </MenuItem>
+                  {mantencioneNormalItem
+                    ? mantencioneNormalItem.map((item, index) => {
+                        return (
+                          <MenuItem
+                            key={item.CODIGO_MANTENCION}
+                            value={item.CODIGO_MANTENCION}
+                          >
+                            {item.CODIGO_MANTENCION}
+                          </MenuItem>
+                        );
+                      })
+                    : null}
+                </Select>
+              </FormControl>
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                id="programa"
+                {...register("programa")}
+                className={classes.espaciadoInput}
+                label="Programa"
+                multiline
+                rows={6}
+                fullWidth
+                defaultValue=""
+                variant="outlined"
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} className={classes.paper}>
+              <Typography variant="h6" noWrap>
+                Modificación de Mantención
+              </Typography>
+              listado
+              <Grid container>
+                <Grid item xs={6} spacing={1}>
+                  <Box m={0.5}>
+                    <TextField
+                      InputLabelProps={{ shrink: true }}
+                      id="elementoMod"
+                      {...register("elementoMod")}
+                      disabled
+                      label="Elemento"
+                      className={classes.espaciadoInput}
+                      fullWidth
+                      variant="outlined"
+                    />
+                    <TextField
+                      InputLabelProps={{ shrink: true }}
+                      id="tipoMod"
+                      {...register("tipoMod")}
+                      disabled
+                      label="Tipo"
+                      className={classes.espaciadoInput}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={6} spacing={1}>
+                  <Box m={0.5}>
+                    <TextField
+                      InputLabelProps={{ shrink: true }}
+                      id="accionMod"
+                      {...register("accionMod")}
+                      disabled
+                      label="Acción"
+                      className={classes.espaciadoInput}
+                      fullWidth
+                      variant="outlined"
+                    />
+                    <TextField
+                      InputLabelProps={{ shrink: true }}
+                      id="kilometrajeMod"
+                      {...register("kilometrajeMod")}
+                      disabled
+                      label="Kilometraje Programa"
+                      className={classes.espaciadoInput}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={6} spacing={1}>
-                <Box m={0.5}>
-                  <TextField
-                    InputLabelProps={{ shrink: true }}
-                    id="accionMod"
-                    {...register("accionMod")}
-                    disabled
-                    label="Acción"
-                    className={classes.espaciadoInput}
-                    fullWidth
-                    variant="outlined"
-                  />
-                  <TextField
-                    InputLabelProps={{ shrink: true }}
-                    id="kilometrajeMod"
-                    {...register("kilometrajeMod")}
-                    disabled
-                    label="Kilometraje Programa"
-                    className={classes.espaciadoInput}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </Box>
-              </Grid>
-             
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3} className={classes.paper}>
-            <Typography variant="h6" noWrap>
-              <ListItemIcon className={classes.menuItemIcon}>
-                <FontAwesomeIcon icon={faTools} size="xs" />
-              </ListItemIcon>
-              Ingreso Nueva Mantención
-            </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} className={classes.paper}>
+              <Typography variant="h6" noWrap>
+                <ListItemIcon className={classes.menuItemIcon}>
+                  <FontAwesomeIcon icon={faTools} size="xs" />
+                </ListItemIcon>
+                Ingreso Nueva Mantención
+              </Typography>
 
-            <TextField
-              InputLabelProps={{ shrink: true }}
-              id="kilometrajeNew"
-              {...register("kilometrajeNew")}
-              label="Kilometraje Programa"
-              className={classes.espaciadoInput}
-              fullWidth
-              variant="outlined"
-            />
-            <Button
-              type="submit"
-              className={classes.boton}
-              variant="contained"
-              fullWidth
-              color="primary"
-            >
-              Grabar Ingreso
-            </Button>
-          </Paper>
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                id="kilometrajeNew"
+                {...register("kilometrajeNew")}
+                label="Kilometraje Programa"
+                className={classes.espaciadoInput}
+                fullWidth
+                variant="outlined"
+              />
+              <Button
+                type="submit"
+                className={classes.boton}
+                variant="contained"
+                fullWidth
+                color="primary"
+              >
+                Grabar Ingreso
+              </Button>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
       </form>
     </div>
   );

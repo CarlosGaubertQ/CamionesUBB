@@ -471,13 +471,13 @@ export default function CamionActualizacion() {
                     fullWidth
                     className={classes.formControl}
                   >
-                    <InputLabel id="primerCamion">Camión 1</InputLabel>
+                    <InputLabel id="primerCamion">Camiones</InputLabel>
                     <Select
                       labelId="primerCamion"
                       id="primerCamion"
                       value={patente}
                       onChange={handleChangePatente}
-                      label="Camion 1"
+                      label="Camiones"
                     >
                       <MenuItem value="">
                         <em></em>

@@ -1,53 +1,142 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import React, { useEffect } from 'react'
+import MaterialDatatable from 'material-datatable'
+import Axios from 'axios'
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
+    flexGrow: 1,
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+  paper: {
+    padding: theme.spacing(3),
+    textAlign: "center",
+    width: "100%",
+    marginBottom: theme.spacing(3),
+    borderColor: "#430",
   },
-  title: {
-    fontSize: 14,
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
   },
-  pos: {
-    marginBottom: 12,
+  form: {
+
+
   },
-});
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  prueba: {
+    width: '100%'
+  }
+}));
+
 
 export default function SimpleCard() {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  const [choferesItem, setChoferesItem] = React.useState([]);
 
+  useEffect(() => {
+    cargarChoferes();
+  }, []);
+  const cargarChoferes = async () => {
+    const { data } = await Axios.get("http://localhost:4000/api/chofer/avisoLicencia/");
+    setChoferesItem(data.data);
+    return null;
+  };
+
+  const options = {
+    filter: true,
+    selectableRows: false,
+
+    responsive: 'scroll',
+    rowsPerPage: 10,
+    textLabels: {
+      body: {
+        noMatch: "No se encontraron choferes",
+        toolTip: "Sort",
+      },
+      pagination: {
+        next: "Siguiente",
+        previous: "Anterior",
+        rowsPerPage: "Columnas por pagina:",
+        displayRows: "de",
+      },
+      toolbar: {
+        search: "Buscar",
+        downloadCsv: "Descargar CSV",
+        print: "Imprimir",
+        viewColumns: "Ver columnas",
+        filterTable: "Filtrar tabla",
+      },
+      filter: {
+        all: "Todos",
+        title: "Filtros",
+        reset: "Reiniciar",
+      },
+      viewColumns: {
+        title: "Mostrar columnas",
+        titleAria: "Mostrar/Ocultar Columnas",
+      },
+
+    }
+
+  };
+
+  const columns = [
+
+    {
+      name: 'RUT',
+      field: 'RUT_EMPLEADO',
+    },
+    {
+      name: 'Nombre',
+      field: 'NOMBRE_EMPLEADO',
+    },
+    {
+      name: 'Apellido paterno',
+      field: 'APELLIDO_EMPLEADO',
+    },
+    {
+      name: 'Apellido materno',
+      field: 'APELLIDO_EMPLEADO2',
+    },
+    {
+      name: 'Control licencia',
+      field: 'FECHA_CONTROL_LICENCIA',
+    },
+
+  ];
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="h2">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
-  );
+    <div className={classes.root}>
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          container
+          direction="row"
+          justify="start"
+        >
+          <Typography variant="h4" component="h2" gutterBottom>
+            Revisar Controles de Licencia
+          </Typography>
+
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          container
+          direction="row"
+          justify="start"
+        ><MaterialDatatable
+
+            title={"Fecha de vencimiento"}
+            data={choferesItem}
+            columns={columns}
+            options={options}
+          /></Grid>
+
+      </Grid>
+    </div>
+  )
 }

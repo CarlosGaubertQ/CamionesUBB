@@ -72,7 +72,7 @@ export default function CamionActualizacion() {
         datosCamion.ANO_FABRICACION_CAMION;
       document.getElementById("kmcompra").value =
         datosCamion.KILOMETRAJE_COMPRA_CAMION;
-      setSelectedDate(new Date(datosCamion.FECHA_COMPRA_CAMION));
+
       document.getElementById("valorcompra").value =
         datosCamion.VALOR_COMPRA_CAMION;
       document.getElementById("cargaMaxima").value = datosCamion.CARGA_MAXIMA;
@@ -121,7 +121,7 @@ export default function CamionActualizacion() {
       document.getElementById("motor").focus();
       document.getElementById("chasis").focus();
       document.getElementById("ejes").focus();
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -484,15 +484,15 @@ export default function CamionActualizacion() {
                       </MenuItem>
                       {camionesItem
                         ? camionesItem.map((item, index) => {
-                            return (
-                              <MenuItem
-                                key={item.PATENTE_CAMION}
-                                value={item.PATENTE_CAMION}
-                              >
-                                {item.PATENTE_CAMION}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem
+                              key={item.PATENTE_CAMION}
+                              value={item.PATENTE_CAMION}
+                            >
+                              {item.PATENTE_CAMION}
+                            </MenuItem>
+                          );
+                        })
                         : null}
                     </Select>
                   </FormControl>
@@ -937,18 +937,21 @@ export default function CamionActualizacion() {
                 justify="center"
                 alignItems="center"
               >
-                <Button
-                  type="submit"
-                  id="aBoton"
-                  label="Ejes"
-                  variant="contained"
-                  color="primary"
-                >
-                  Grabar ingreso
-                </Button>
+
               </Grid>
             </Grid>
           </Paper>
+          <Button
+            type="submit"
+            className={classes.espaciadoInput}
+            id="aBoton"
+            fullWidth
+            label="Ejes"
+            variant="contained"
+            color="primary"
+          >
+            Grabar ingreso
+          </Button>
         </Grid>
       </form>
     </div>

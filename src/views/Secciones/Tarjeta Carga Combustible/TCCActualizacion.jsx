@@ -150,7 +150,7 @@ export default function TCCActualizacion() {
     cargarChoferes();
   }, []);
   const cargarChoferes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/chofer/");
+    const { data } = await Axios.get("/api/chofer/");
     setChoferesItem(data.data);
     return null;
   };
@@ -160,7 +160,7 @@ export default function TCCActualizacion() {
   }, []);
   const cargarTarjetas = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/tarjetacredito/"
+      "/api/tarjetacredito/"
     );
     setTarjetaItem(data.data);
     return null;
@@ -226,7 +226,7 @@ export default function TCCActualizacion() {
           });
         } else {
          
-          Axios.post("http://localhost:4000/api/tarjetacredito/", {
+          Axios.post("/api/tarjetacredito/", {
             CODIGO_TARJETA: data.codigo,
             TOPE_TARJETA: data.tope,
             ESTADO_TARJETA: estado,
@@ -270,7 +270,7 @@ export default function TCCActualizacion() {
           });
         } else {
           if (tarjeta !== "") {
-            Axios.put(`http://localhost:4000/api/tarjetacredito/${tarjeta}`, {
+            Axios.put(`/api/tarjetacredito/${tarjeta}`, {
               TOPE_TARJETA: data.tope,
               ESTADO_TARJETA: estado,
               RUT_EMPLEADO: choferes,
@@ -315,7 +315,7 @@ export default function TCCActualizacion() {
           });
         } else {
           if (tarjeta !== "") {
-            Axios.delete("http://localhost:4000/api/tarjetacredito/" + tarjeta)
+            Axios.delete("/api/tarjetacredito/" + tarjeta)
               .then((response) => {
                 Swal.fire({
                   title: "Tarjeta de credito eliminada",

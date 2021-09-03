@@ -42,10 +42,13 @@ export default function CamionListadoUnCamion() {
         setPatente(event.target.value);
 
         try {
-            const datosCamion = camionesItem.find(
-                (camion) => camion.PATENTE_CAMION === event.target.value
-            );
-            setCamionSelect([datosCamion])
+            if(event.target.value !== ""){
+                const datosCamion = camionesItem.find(
+                    (camion) => camion.PATENTE_CAMION === event.target.value
+                );
+                setCamionSelect([datosCamion])
+            }
+            
         } catch (error) {
 
         }
@@ -124,7 +127,7 @@ export default function CamionListadoUnCamion() {
         cargarCamiones();
     }, []);
     const cargarCamiones = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/camion/");
+        const { data } = await Axios.get("/api/camion/");
         setCamionesItem(data.data);
         return null;
     };

@@ -113,14 +113,14 @@ export default function ConductoresSueldos() {
 
   const cargarSueldos = async (rut) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/sueldochofer/" + rut
+      "/api/sueldochofer/" + rut
     );
     setSueldosChoferItem(data.data);
     return null;
   };
 
   const cargarChoferes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/chofer/");
+    const { data } = await Axios.get("/api/chofer/");
     setChoferesItem(data.data);
     return null;
   };
@@ -192,7 +192,7 @@ export default function ConductoresSueldos() {
           });
         } else {
           console.log("guardar");
-          Axios.post("http://localhost:4000/api/sueldochofer/", {
+          Axios.post("/api/sueldochofer/", {
             RUT_CHOFER: choferes,
             FECHA_PAGO: selectedDate,
             SUELDO_BRUTO: data.sueldoBruto,
@@ -237,7 +237,7 @@ export default function ConductoresSueldos() {
         } else {
           if (fechaDePago !== "") {
             Axios.put(
-              `http://localhost:4000/api/sueldochofer/${choferes}&${fechaDePago}`,
+              `/api/sueldochofer/${choferes}&${fechaDePago}`,
               {
                 SUELDO_BRUTO: data.sueldoBruto,
                 PROVICION_DESAUCIO: data.provisionDesahucio,
@@ -272,7 +272,7 @@ export default function ConductoresSueldos() {
       case "Eliminar":
         if (fechaDePago !== "") {
           Axios.delete(
-            "http://localhost:4000/api/sueldochofer/" +
+            "/api/sueldochofer/" +
               choferes +
               "&" +
               fechaDePago

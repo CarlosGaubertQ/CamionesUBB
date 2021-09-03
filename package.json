@@ -16,7 +16,7 @@
     "@testing-library/user-event": "^12.1.10",
     "array-move": "^3.0.1",
     "axios": "^0.21.1",
-    "chart.js": "^3.5.0",
+    "chart.js": "^3.5.1",
     "date-fns": "^2.0.0-beta.5",
     "material-datatable": "^0.4.1",
     "react": "^17.0.2",
@@ -58,5 +58,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "proxy": "http://localhost:4000"
 }

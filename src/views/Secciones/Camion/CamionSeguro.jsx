@@ -59,7 +59,7 @@ export default function CamionSeguro() {
 
   const cargarSeguros = async (patente) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/segurocamion/" + patente
+      "/api/segurocamion/" + patente
     );
     console.log(data.data);
     setSegurosItem(data.data);
@@ -90,7 +90,7 @@ export default function CamionSeguro() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async (patente) => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -146,7 +146,7 @@ export default function CamionSeguro() {
               },
             });
           } else {
-            Axios.post("http://localhost:4000/api/segurocamion/", {
+            Axios.post("/api/segurocamion/", {
               PATENTE_CAMION: patente,
               VALOR_SEGURO: data.valorpago,
               FECHA_PAGO_SEGURO: selectedDate,
@@ -192,7 +192,7 @@ export default function CamionSeguro() {
               if (fechas !== "") {
                 
                 Axios.put(
-                  `http://localhost:4000/api/segurocamion/${patente}&${fechas}`,
+                  `/api/segurocamion/${patente}&${fechas}`,
                   {
                     VALOR_SEGURO:  data.valorpago,
                   }
@@ -235,7 +235,7 @@ export default function CamionSeguro() {
             if (fechas !== "") {
     
               Axios.delete(
-                "http://localhost:4000/api/segurocamion/" + patente + "&" + fechas
+                "/api/segurocamion/" + patente + "&" + fechas
               )
                 .then((response) => {
                   Swal.fire({

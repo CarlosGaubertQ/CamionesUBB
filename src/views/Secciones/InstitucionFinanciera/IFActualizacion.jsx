@@ -115,7 +115,7 @@ export default function IFActualizacion() {
     cargarBancos();
   }, []);
   const cargarBancos = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/banco/");
+    const { data } = await Axios.get("/api/banco/");
     setBancosItem(data.data);
     return null;
   };
@@ -157,7 +157,7 @@ export default function IFActualizacion() {
           const dv = data.rut.charAt(data.rut.length - 1);
           const rutsolo = data.rut.substring(0, data.rut.length - 1);
 
-          Axios.post("http://localhost:4000/api/banco/", {
+          Axios.post("/api/banco/", {
             CODIGO_BANCO: rutsolo,
             NOMBRE_BANCO: data.nombre,
             DIRECCION_INSTITUCION: data.direccion,
@@ -202,7 +202,7 @@ export default function IFActualizacion() {
         } else {
           if (bancos !== "") {
             Axios.put(
-              `http://localhost:4000/api/banco/${bancos}`,
+              `/api/banco/${bancos}`,
               {
                 NOMBRE_BANCO: data.nombre,
                 DIRECCION_INSTITUCION: data.direccion,
@@ -252,7 +252,7 @@ export default function IFActualizacion() {
         } else {
           if (bancos !== "") {
             Axios.delete(
-              `http://localhost:4000/api/banco/${bancos}`)
+              `/api/banco/${bancos}`)
               .then((response) => {
                 if (response.status === 200) {
                   Swal.fire({

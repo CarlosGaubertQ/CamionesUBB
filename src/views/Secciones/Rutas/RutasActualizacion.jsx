@@ -86,13 +86,13 @@ export default function RutasActualizacion() {
     cargarOrigen();
   }, []);
   const cargarOrigen = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/recorrido/");
+    const { data } = await Axios.get("/api/recorrido/");
     setOrigenItem(data.data);
     return null;
   };
   const cargarOrigenByOrigen = async (origen) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/recorrido/" + origen
+      "/api/recorrido/" + origen
     );
     setSeccionItem(data.data);
     return null;
@@ -100,7 +100,7 @@ export default function RutasActualizacion() {
 
   const cargarOrigenByOrigenSeccion = async (origen, seccion) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/recorrido/destino/" + origen + "&" + seccion
+      "/api/recorrido/destino/" + origen + "&" + seccion
     );
     setDestinoItem(data.data);
     return null;
@@ -214,7 +214,7 @@ export default function RutasActualizacion() {
           });
         } else {
           let pavimento = parseInt(data.kmTotal) - parseInt(data.kmRipio);
-          Axios.post("http://localhost:4000/api/recorrido/", {
+          Axios.post("/api/recorrido/", {
             Origen: data.origen,
             Destino: data.destino,
             Seccion: data.seccion,
@@ -268,7 +268,7 @@ export default function RutasActualizacion() {
           if (origen !== "" || seccion !== "" || destino !== "") {
             console.log(origen, seccion, destino)
             let pavimento = parseInt(data.kmTotal) - parseInt(data.kmRipio);
-            Axios.put(`http://localhost:4000/api/recorrido/${origen}&${destino}&${seccion}`, {
+            Axios.put(`/api/recorrido/${origen}&${destino}&${seccion}`, {
               Km_Ripio: data.kmRipio,
               Km_Pavimento: pavimento,
               Total_Km: data.kmTotal,
@@ -318,7 +318,7 @@ export default function RutasActualizacion() {
           });
         } else {
           if (origen !== "" || seccion !== "" || destino !== "") {
-            Axios.delete("http://localhost:4000/api/recorrido/" + origen + "&" + destino + "&" + seccion)
+            Axios.delete("/api/recorrido/" + origen + "&" + destino + "&" + seccion)
               .then((response) => {
                 Swal.fire({
                   title: "Empleado eliminado",

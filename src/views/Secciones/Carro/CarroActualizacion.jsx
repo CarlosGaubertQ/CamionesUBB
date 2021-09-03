@@ -100,7 +100,7 @@ export default function CarroActualizacion() {
     cargarCarros();
   }, []);
   const cargarCarros = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/carro/");
+    const { data } = await Axios.get("/api/carro/");
     setCarrosItem(data.data);
     return null;
   };
@@ -169,7 +169,7 @@ export default function CarroActualizacion() {
             },
           });
         } else {
-          Axios.post("http://localhost:4000/api/carro/", {
+          Axios.post("/api/carro/", {
             PATENTE_CARRO: data.patente,
             TIPO_DE_CARRO: tipo,
             FECHA_DE_COMPRA_CARRO: selectedDate,
@@ -217,7 +217,7 @@ export default function CarroActualizacion() {
           if (patente !== "") {
 
               Axios.put(
-                `http://localhost:4000/api/carro/${patente}`,
+                `/api/carro/${patente}`,
                 {
                   TIPO_DE_CARRO: tipo,
                   FECHA_DE_COMPRA_CARRO: selectedDate,
@@ -257,7 +257,7 @@ export default function CarroActualizacion() {
       case "Eliminar":
         if (patente !== "") {
             Axios.delete(
-              "http://localhost:4000/api/carro/" + patente 
+              "/api/carro/" + patente 
             )
               .then((response) => {
                 Swal.fire({

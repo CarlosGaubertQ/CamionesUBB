@@ -115,7 +115,7 @@ export default function ADCActualizacion() {
 
 
   const cargarCamionChofer = async (patente, chofer) => {
-    const { data } = await Axios.get("http://localhost:4000/api/camionchofer/" + patente + "&" + chofer);
+    const { data } = await Axios.get("/api/camionchofer/" + patente + "&" + chofer);
     setCamionChoferItem(data.data);
     return null;
   };
@@ -124,7 +124,7 @@ export default function ADCActualizacion() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -132,7 +132,7 @@ export default function ADCActualizacion() {
     cargarChoferes();
   }, []);
   const cargarChoferes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/chofer/");
+    const { data } = await Axios.get("/api/chofer/");
     setChoferesItem(data.data);
     return null;
   };
@@ -160,7 +160,7 @@ export default function ADCActualizacion() {
             },
           });
         } else {
-          Axios.post("http://localhost:4000/api/camionchofer/", {
+          Axios.post("/api/camionchofer/", {
             Patente_Camion: patente,
             Rut_Conductor: choferes,
             FechaDesde: selectedDate,
@@ -201,7 +201,7 @@ export default function ADCActualizacion() {
           });
         } else {
           Axios.put(
-            `http://localhost:4000/api/camionchofer/${patente}&${choferes}`,
+            `/api/camionchofer/${patente}&${choferes}`,
             {
               FechaHasta: selectedDate,
             }
@@ -242,7 +242,7 @@ export default function ADCActualizacion() {
           });
         } else {
           Axios.delete(
-            "http://localhost:4000/api/camionchofer/" + fechaCamionChofer + "&" + patente + "&" + choferes 
+            "/api/camionchofer/" + fechaCamionChofer + "&" + patente + "&" + choferes 
           )
             .then((response) => {
               Swal.fire({

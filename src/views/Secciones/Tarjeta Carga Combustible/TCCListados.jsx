@@ -32,7 +32,7 @@ export default function TCCListados() {
     }, []);
     const cargarTarjetas = async () => {
         const { data } = await Axios.get(
-            "http://localhost:4000/api/tarjetacredito/"
+            "/api/tarjetacredito/"
         );
         setTarjetaItem(data.data);
         return null;

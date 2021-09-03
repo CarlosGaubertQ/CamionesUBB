@@ -120,7 +120,7 @@ export default function EfectuarViaje() {
   }, []);
 
   const cargarTipoCarga = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/tipocarga/");
+    const { data } = await Axios.get("/api/tipocarga/");
     setTipoCargaItem(data.data);
     return null;
   };
@@ -130,7 +130,7 @@ export default function EfectuarViaje() {
   }, []);
 
   const cargarListProgramaViaje = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/programa/");
+    const { data } = await Axios.get("/api/programa/");
     setListProgramasViajes(data.data);
     return null;
   };
@@ -141,7 +141,7 @@ export default function EfectuarViaje() {
   }, []);
 
   const cargarProgramaViaje = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/programa/norealizado/");
+    const { data } = await Axios.get("/api/programa/norealizado/");
     setProgramaViajeItem(data.data);
     return null;
   };
@@ -186,7 +186,7 @@ export default function EfectuarViaje() {
   }
 
   const cargarRuta = async (origen, seccion, destino) => {
-    const { data } = await Axios.get(`http://localhost:4000/api/recorrido/primarykey/${origen}&${seccion}&${destino}`);
+    const { data } = await Axios.get(`/api/recorrido/primarykey/${origen}&${seccion}&${destino}`);
     var datos = data.data[0]
     document.getElementById("kmRipio").value = datos.Km_Ripio
     document.getElementById("kmPavimento").value = datos.Km_Pavimento
@@ -258,7 +258,7 @@ export default function EfectuarViaje() {
             (programa) => programa.CODIGO_VIAJE === programaViaje
           );
     
-          Axios.post("http://localhost:4000/api/viajeefectuado/", {
+          Axios.post("/api/viajeefectuado/", {
             NUMERO_GUIA_DESPACHO: programaViaje,
             PATENTE_CAMION: datosProgramaViaje.PATENTE_CAMION,
             RUT_EMPLEADO: datosProgramaViaje.PATENTE_CAMION,
@@ -292,7 +292,7 @@ export default function EfectuarViaje() {
              
               if (response.status === 200) {
                 Axios.put(
-                  `http://localhost:4000/api/programa/${datosProgramaViaje.PATENTE_CAMION}&${datosProgramaViaje.CODIGO_VIAJE}&${datosProgramaViaje.FECHA_VIAJE}&${datosProgramaViaje.HORA_SALIDA_VIAJE}&${datosProgramaViaje.CODIGO_OBRA}`,
+                  `/api/programa/${datosProgramaViaje.PATENTE_CAMION}&${datosProgramaViaje.CODIGO_VIAJE}&${datosProgramaViaje.FECHA_VIAJE}&${datosProgramaViaje.HORA_SALIDA_VIAJE}&${datosProgramaViaje.CODIGO_OBRA}`,
                   {
                     Viajerealizado: "SI"
                   }

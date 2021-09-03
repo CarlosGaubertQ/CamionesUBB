@@ -74,7 +74,7 @@ export default function OtrosEmpleadosActualizacion() {
     cargarEmpleado();
   }, []);
   const cargarEmpleado = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/empleado/");
+    const { data } = await Axios.get("/api/empleado/");
     setEmpleadoItem(data.data);
     return null;
   };
@@ -190,7 +190,7 @@ export default function OtrosEmpleadosActualizacion() {
           } else {
             const dv = data.rut.charAt(data.rut.length - 1);
             const rutsolo = data.rut.substring(0, data.rut.length - 1);
-            Axios.post("http://localhost:4000/api/empleado/", {
+            Axios.post("/api/empleado/", {
               RUT_EMPLEADO: rutsolo,
               NOMBRE_EMPLEADO: data.primerNombre,
               NOMBRE_EMPLEADO2: data.segundoNombre,
@@ -246,7 +246,7 @@ export default function OtrosEmpleadosActualizacion() {
           });
         } else {
           if (empleado !== "") {
-            Axios.put(`http://localhost:4000/api/empleado/${empleado}`, {
+            Axios.put(`/api/empleado/${empleado}`, {
               NOMBRE_EMPLEADO: data.primerNombre,
               NOMBRE_EMPLEADO2: data.segundoNombre,
               APELLIDO_EMPLEADO: data.apellidoPaterno,
@@ -298,7 +298,7 @@ export default function OtrosEmpleadosActualizacion() {
           });
         } else {
           if (empleado !== "") {
-            Axios.delete("http://localhost:4000/api/empleado/" + empleado)
+            Axios.delete("/api/empleado/" + empleado)
               .then((response) => {
                 Swal.fire({
                   title: "Empleado eliminado",

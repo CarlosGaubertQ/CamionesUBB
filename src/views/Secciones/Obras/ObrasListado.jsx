@@ -38,7 +38,7 @@ export default function ObrasListado() {
         cargarObras();
       }, []);
       const cargarObras = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/obra/");
+        const { data } = await Axios.get("/api/obra/");
         setObrasItem(data.data);
         return null;
       };

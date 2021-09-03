@@ -74,7 +74,7 @@ export default function CamionAsignarCarro() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -83,7 +83,7 @@ export default function CamionAsignarCarro() {
   }, []);
   const cargarCarrosLibres = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/carro/sincamion/"
+      "/api/carro/sincamion/"
     );
     setItems(data.data);
     return null;
@@ -137,7 +137,7 @@ export default function CamionAsignarCarro() {
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            Axios.put("http://localhost:4000/api/camion/" + patente, {
+            Axios.put("/api/camion/" + patente, {
               Patente_Carro: null,
             })
               .then((response) => {
@@ -156,7 +156,7 @@ export default function CamionAsignarCarro() {
 
                   console.log(final, formValues);
                   Axios.put(
-                    "http://localhost:4000/api/odometro/" +
+                    "/api/odometro/" +
                       patente +
                       "&" +
                       final,
@@ -226,7 +226,7 @@ export default function CamionAsignarCarro() {
           denyButtonText: `Cancelar`,
         }).then((result) => {
           if (result.isConfirmed) {
-            Axios.put("http://localhost:4000/api/camion/" + patente, {
+            Axios.put("/api/camion/" + patente, {
               Patente_Carro: patenteCarro,
             })
               .then((response) => {
@@ -242,7 +242,7 @@ export default function CamionAsignarCarro() {
 
                   console.log(final, formValues);
                   Axios.put(
-                    "http://localhost:4000/api/odometro/" +
+                    "/api/odometro/" +
                       patente +
                       "&" +
                       final,

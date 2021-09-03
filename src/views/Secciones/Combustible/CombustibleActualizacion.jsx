@@ -137,7 +137,7 @@ export default function CombustibleActualizacion() {
   }, []);
   const cargartarjetaCredito = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/tarjetacredito/"
+      "/api/tarjetacredito/"
     );
     setTarjetaCreditoItem(data.data);
     return null;
@@ -146,7 +146,7 @@ export default function CombustibleActualizacion() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -155,7 +155,7 @@ export default function CombustibleActualizacion() {
   }, []);
   const cargarBoletas = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/boletacombustible/"
+      "/api/boletacombustible/"
     );
     setBoletasItem(data.data);
     return null;
@@ -237,7 +237,7 @@ export default function CombustibleActualizacion() {
             },
           });
         } else {
-          Axios.post("http://localhost:4000/api/boletacombustible/", {
+          Axios.post("/api/boletacombustible/", {
             NUMERO_BOLETA_COMBUSTIBLE: data.numBoleta,
             NUMERO_GUIA: data.numeroGuia,
             PROVEEDOR_COMBUSTIBLE: data.proovedor,
@@ -289,7 +289,7 @@ export default function CombustibleActualizacion() {
         } else {
           if (boletas !== "") {
             Axios.put(
-              `http://localhost:4000/api/boletacombustible/${boletas}`,
+              `/api/boletacombustible/${boletas}`,
               {
                 NUMERO_GUIA: data.numeroGuia,
                 PROVEEDOR_COMBUSTIBLE: data.proovedor,
@@ -347,7 +347,7 @@ export default function CombustibleActualizacion() {
         } else {
           if (boletas !== "") {
             Axios.delete(
-              "http://localhost:4000/api/boletacombustible/" + boletas
+              "/api/boletacombustible/" + boletas
             )
               .then((response) => {
                 Swal.fire({

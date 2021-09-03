@@ -65,7 +65,7 @@ export default function ObrasActualizacion() {
     cargarObras();
   }, []);
   const cargarObras = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/obra/");
+    const { data } = await Axios.get("/api/obra/");
     setObrasItem(data.data);
     return null;
   };
@@ -124,7 +124,7 @@ export default function ObrasActualizacion() {
             },
           });
         } else {
-          Axios.post("http://localhost:4000/api/obra/", {
+          Axios.post("/api/obra/", {
             CODIGO_OBRA: data.codigoObra,
             DESCRIPCION_OBRA: data.descripcion,
           })
@@ -164,7 +164,7 @@ export default function ObrasActualizacion() {
           });
         } else {
           if (obras !== "") {
-            Axios.put(`http://localhost:4000/api/obra/${obras}`, {
+            Axios.put(`/api/obra/${obras}`, {
               DESCRIPCION_OBRA: data.descripcion,
             })
               .then((response) => {
@@ -209,7 +209,7 @@ export default function ObrasActualizacion() {
         } else {
           if (obras !== "") {
             Axios.delete(
-              "http://localhost:4000/api/obra/" + obras
+              "/api/obra/" + obras
             )
               .then((response) => {
                 Swal.fire({

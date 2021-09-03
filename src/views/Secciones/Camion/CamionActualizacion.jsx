@@ -131,7 +131,7 @@ export default function CamionActualizacion() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -205,7 +205,7 @@ export default function CamionActualizacion() {
           });
         } else {
           //grabar
-          Axios.post("http://localhost:4000/api/camion/", {
+          Axios.post("/api/camion/", {
             PATENTE_CAMION: data.patente,
             MODELO_CAMION: data.modelo,
             CODIGO_MANTENCION: data.sigla,
@@ -268,7 +268,7 @@ export default function CamionActualizacion() {
           });
         } else {
           if (patente !== "") {
-            Axios.put("http://localhost:4000/api/camion/" + patente, {
+            Axios.put("/api/camion/" + patente, {
               PATENTE_CAMION: data.patente,
               MODELO_CAMION: data.modelo,
               CODIGO_MANTENCION: data.sigla,
@@ -323,7 +323,7 @@ export default function CamionActualizacion() {
         break;
       case "Eliminar":
         if (patente !== "") {
-          Axios.delete("http://localhost:4000/api/camion/" + patente)
+          Axios.delete("/api/camion/" + patente)
             .then((response) => {
               Swal.fire({
                 title: "Camion eliminado",

@@ -35,7 +35,7 @@ export default function ConductoresListado() {
         cargarChoferes();
     }, []);
     const cargarChoferes = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/chofer/");
+        const { data } = await Axios.get("/api/chofer/");
         setChoferesItem(data.data);
         return null;
     };

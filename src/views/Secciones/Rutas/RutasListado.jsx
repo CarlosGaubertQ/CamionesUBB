@@ -35,7 +35,7 @@ export default function RutasListado() {
       }, []);
     
       const cargarRutas = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/recorrido/all/");
+        const { data } = await Axios.get("/api/recorrido/all/");
         setRutasItem(data.data);
         return null;
       };

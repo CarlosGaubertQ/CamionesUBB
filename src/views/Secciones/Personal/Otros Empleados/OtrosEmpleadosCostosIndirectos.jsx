@@ -91,7 +91,7 @@ export default function OtrosEmpleadosCostosIndirectos() {
   }, []);
   const cargarCostosIndirectos = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/costodistribuir/"
+      "/api/costodistribuir/"
     );
     setFechasItem(data.data);
     return null;
@@ -153,7 +153,7 @@ export default function OtrosEmpleadosCostosIndirectos() {
             },
           });
         } else {
-          Axios.post("http://localhost:4000/api/costodistribuir/", {
+          Axios.post("/api/costodistribuir/", {
             FECHA_PAGO: selectedDateContrato,
             MONTO_DISTRIBUCION: data.costo,
           })
@@ -194,7 +194,7 @@ export default function OtrosEmpleadosCostosIndirectos() {
           });
         } else {
           if (fechas !== "") {
-            Axios.put(`http://localhost:4000/api/costodistribuir/${fechas}`, {
+            Axios.put(`/api/costodistribuir/${fechas}`, {
               MONTO_DISTRIBUCION: data.costo,
             })
               .then((response) => {
@@ -238,7 +238,7 @@ export default function OtrosEmpleadosCostosIndirectos() {
           });
         } else {
           if (fechas !== "") {
-            Axios.delete("http://localhost:4000/api/costodistribuir/" + fechas)
+            Axios.delete("/api/costodistribuir/" + fechas)
               .then((response) => {
                 Swal.fire({
                   title: "Costo indirecto eliminado",

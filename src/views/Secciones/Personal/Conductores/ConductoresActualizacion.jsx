@@ -77,7 +77,7 @@ export default function ConductoresActualizacion() {
     cargarChoferes();
   }, []);
   const cargarChoferes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/chofer/");
+    const { data } = await Axios.get("/api/chofer/");
     setChoferesItem(data.data);
     return null;
   };
@@ -90,9 +90,9 @@ export default function ConductoresActualizacion() {
         (chofer) => chofer.RUT_EMPLEADO === event.target.value
       );
 
-      setSelectedDateControlLicencia(datosChofer.FECHA_CONTROL_LICENCIA)
-      setSelectedDateNacimiento(datosChofer.FECHA_NACIMIENTO)
-      setSelectedDateContrato(datosChofer.FECHA_CONTRATO)
+      //setSelectedDateControlLicencia(datosChofer.FECHA_CONTROL_LICENCIA)
+      //setSelectedDateNacimiento(datosChofer.FECHA_NACIMIENTO)
+      //setSelectedDateContrato(datosChofer.FECHA_CONTRATO)
 
       document.getElementById("licenciaConducir").value = datosChofer.NRO_LICENCIA_CONDUCIR;
       document.getElementById("licenciaConducir").focus();
@@ -215,7 +215,7 @@ export default function ConductoresActualizacion() {
             const dv = data.rut.charAt(data.rut.length - 1);
             const rutsolo = data.rut.substring(0, data.rut.length - 1);
 
-            Axios.post("http://localhost:4000/api/chofer/", {
+            Axios.post("/api/chofer/", {
               RUT_EMPLEADO: rutsolo,
               NRO_LICENCIA_CONDUCIR : data.licenciaConducir,
               
@@ -277,7 +277,7 @@ export default function ConductoresActualizacion() {
           });
         } else {
           if (choferes !== "") {
-            Axios.put(`http://localhost:4000/api/chofer/${choferes}`, {
+            Axios.put(`/api/chofer/${choferes}`, {
               NRO_LICENCIA_CONDUCIR : data.licenciaConducir,
               NOMBRE_EMPLEADO: data.primerNombre,
               NOMBRE_EMPLEADO2: data.segundoNombre,
@@ -334,7 +334,7 @@ export default function ConductoresActualizacion() {
           });
         } else {
           if (choferes !== "") {
-            Axios.delete("http://localhost:4000/api/chofer/" + choferes)
+            Axios.delete("/api/chofer/" + choferes)
               .then((response) => {
                 Swal.fire({
                   title: "Chofer eliminada",

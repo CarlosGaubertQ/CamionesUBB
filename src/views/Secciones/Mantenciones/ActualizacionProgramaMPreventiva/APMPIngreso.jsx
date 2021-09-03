@@ -55,7 +55,7 @@ export default function APMPIngreso() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -90,13 +90,13 @@ export default function APMPIngreso() {
       });
     } else {
       //grabar
-      Axios.post("http://localhost:4000/api/mantencionnormal/", {
+      Axios.post("/api/mantencionnormal/", {
         CODIGO_MANTENCION: camion,
         OBSERVACION_MANTENCION: data.observacion,
       })
         .then((response) => {
           if (response.status === 200) {  
-            Axios.post("http://localhost:4000/api/programademantencion/", {
+            Axios.post("/api/programademantencion/", {
               CODIGO_MANTENCION: response.data.data.CODIGO_MANTENCION,
               ELEMENTO: data.elemento,
               TIPO: data.tipo,

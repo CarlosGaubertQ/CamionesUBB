@@ -36,7 +36,7 @@ export default function CarroListados() {
         cargarCarros();
       }, []);
       const cargarCarros = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/carro/");
+        const { data } = await Axios.get("/api/carro/");
         setCarrosItem(data.data);
         return null;
       };

@@ -66,7 +66,7 @@ export default function CamionOdometroMensual() {
 
   const cargarOdometros = async (patente) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/odometro/" + patente
+      "/api/odometro/" + patente
     );
     setOdometrosItem(data.data);
     return null;
@@ -75,7 +75,7 @@ export default function CamionOdometroMensual() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async (patente) => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -155,7 +155,7 @@ export default function CamionOdometroMensual() {
             },
           });
         } else {
-          Axios.post("http://localhost:4000/api/odometro/", {
+          Axios.post("/api/odometro/", {
             PATENTE_CAMION: patente,
             ODOMETRO_CAMION: data.odometro,
             FECHA_ODOMETRO: selectedDate,
@@ -202,7 +202,7 @@ export default function CamionOdometroMensual() {
               const formatFecha = fechas.split('-')
               const fechaFinal = formatFecha[2] + '-' + formatFecha[1] + '-' + formatFecha[0];
               Axios.put(
-                `http://localhost:4000/api/odometro/${patente}&${fechaFinal}`,
+                `/api/odometro/${patente}&${fechaFinal}`,
                 {
                   ODOMETRO_CAMION: data.odometro,
                 }
@@ -246,7 +246,7 @@ export default function CamionOdometroMensual() {
             const formatFecha = fechas.split('-')
               const fechaFinal = formatFecha[2] + '-' + formatFecha[1] + '-' + formatFecha[0];
             Axios.delete(
-              "http://localhost:4000/api/odometro/" + patente + "&" + fechaFinal
+              "/api/odometro/" + patente + "&" + fechaFinal
             )
               .then((response) => {
                 Swal.fire({

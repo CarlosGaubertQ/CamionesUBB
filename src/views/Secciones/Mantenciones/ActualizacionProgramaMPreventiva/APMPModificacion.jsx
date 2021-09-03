@@ -93,7 +93,7 @@ export default function APMPModificacion() {
   }, []);
   const cargarMantencionNormal = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/mantencionnormal/"
+      "/api/mantencionnormal/"
     );
     setMantencioneNormal(data.data);
     return null;
@@ -104,7 +104,7 @@ export default function APMPModificacion() {
   }, []);
   const cargarProgramaMantencion = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/programademantencion/"
+      "/api/programademantencion/"
     );
     setProgramaMantencion(data.data);
     return null;
@@ -129,13 +129,13 @@ export default function APMPModificacion() {
       });
     } else {
       //grabar
-      Axios.put("http://localhost:4000/api/mantencionnormal/" + mantencion, {
+      Axios.put("/api/mantencionnormal/" + mantencion, {
         OBSERVACION_MANTENCION: data.programa,
       })
         .then((response) => {
           if (response.status === 200) {
             Axios.put(
-              "http://localhost:4000/api/programademantencion/" + mantencion,
+              "/api/programademantencion/" + mantencion,
               {
                 KILOMETRAJE_PROGRAMADO: data.kilometrajeNew,
                 FECHA_DE_MANTENCION: new Date(),

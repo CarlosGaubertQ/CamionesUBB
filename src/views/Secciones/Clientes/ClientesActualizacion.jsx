@@ -90,7 +90,7 @@ export default function ClientesActualizacion() {
     cargarClientes();
   }, []);
   const cargarClientes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/cliente/");
+    const { data } = await Axios.get("/api/cliente/");
     setClienteItem(data.data);
     return null;
   };
@@ -161,7 +161,7 @@ export default function ClientesActualizacion() {
             const dv = data.rut.charAt(data.rut.length - 1);
             const rutsolo = data.rut.substring(0, data.rut.length - 1);
 
-            Axios.post("http://localhost:4000/api/cliente/", {
+            Axios.post("/api/cliente/", {
               CODIGO_CLIENTE: rutsolo,
               NOMBRE_CLIENTE: data.nombre,
               DIRECCION_CLIENTE: data.direccion,
@@ -215,7 +215,7 @@ export default function ClientesActualizacion() {
         } else {
           if (cliente !== "") {
             const rutsolo = cliente.substring(0, cliente.length - 1);
-            Axios.put(`http://localhost:4000/api/cliente/${rutsolo}`, {
+            Axios.put(`/api/cliente/${rutsolo}`, {
               NOMBRE_CLIENTE: data.nombre,
               DIRECCION_CLIENTE: data.direccion,
               FAX_CLIENTE: data.fax,
@@ -252,7 +252,7 @@ export default function ClientesActualizacion() {
       case "Eliminar":
         if (cliente !== "") {
           const rutsolo = cliente.substring(0, cliente.length - 1);
-          Axios.delete("http://localhost:4000/api/cliente/" + rutsolo)
+          Axios.delete("/api/cliente/" + rutsolo)
             .then((response) => {
               Swal.fire({
                 title: "Cliente eliminado",

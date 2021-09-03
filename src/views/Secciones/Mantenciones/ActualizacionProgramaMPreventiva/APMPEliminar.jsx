@@ -68,7 +68,7 @@ export default function APMPEliminar() {
   }, []);
   const cargarMantencionNormal = async () => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/mantencionnormal/"
+      "/api/mantencionnormal/"
     );
     setMantencioneNormal(data.data);
     return null;
@@ -91,11 +91,11 @@ export default function APMPEliminar() {
       });
     } else {
       //grabar
-      Axios.delete("http://localhost:4000/api/mantencionnormal/" + mantencion)
+      Axios.delete("/api/mantencionnormal/" + mantencion)
         .then((response) => {
           if (response.status === 200) {
             Axios.put(
-              "http://localhost:4000/api/programademantencion/" + mantencion)
+              "/api/programademantencion/" + mantencion)
               .then((response) => {
                 console.log(response);
                 if (response.status === 200) {

@@ -40,7 +40,7 @@ export default function SimpleCard() {
     cargarChoferes();
   }, []);
   const cargarChoferes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/chofer/avisoLicencia/");
+    const { data } = await Axios.get("/api/chofer/avisoLicencia/");
     setChoferesItem(data.data);
     return null;
   };

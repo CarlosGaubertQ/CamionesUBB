@@ -38,7 +38,7 @@ export default function IFListado() {
         cargarBancos();
     }, []);
     const cargarBancos = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/banco/");
+        const { data } = await Axios.get("/api/banco/");
         setBancosItem(data.data);
         return null;
     };

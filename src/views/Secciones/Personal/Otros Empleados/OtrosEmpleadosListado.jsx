@@ -36,7 +36,7 @@ export default function OtrosEmpleadosListado() {
         cargarEmpleado();
       }, []);
       const cargarEmpleado = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/empleado/");
+        const { data } = await Axios.get("/api/empleado/");
         setEmpleadoItem(data.data);
         return null;
       };

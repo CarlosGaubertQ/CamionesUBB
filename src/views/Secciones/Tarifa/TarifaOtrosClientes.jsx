@@ -88,7 +88,7 @@ export default function TarifaOtrosClientes() {
 
   const cargarClietesByTarifaUM = async (cliente, um) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/tarifa/" + cliente + "&" + um
+      "/api/tarifa/" + cliente + "&" + um
     );
     try {
       if (data.data.length === 0) {
@@ -121,7 +121,7 @@ export default function TarifaOtrosClientes() {
   };
 
   const cargarClietes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/cliente/");
+    const { data } = await Axios.get("/api/cliente/");
     setClienteItem(data.data);
     return null;
   };
@@ -182,7 +182,7 @@ export default function TarifaOtrosClientes() {
             },
           });
         } else {
-          Axios.post("http://localhost:4000/api/tarifa/", {
+          Axios.post("/api/tarifa/", {
             Codigo_Cliente: cliente,
             U_M_tarifa: unidadMedida,
             Tari: data.tarifa,
@@ -224,7 +224,7 @@ export default function TarifaOtrosClientes() {
           });
         } else {
           Axios.put(
-            `http://localhost:4000/api/tarifa/${cliente}&${unidadMedida}`,
+            `/api/tarifa/${cliente}&${unidadMedida}`,
             {
               Tari: data.tarifa,
             }
@@ -261,7 +261,7 @@ export default function TarifaOtrosClientes() {
             },
           });
         } else {
-          Axios.delete(`http://localhost:4000/api/tarifa/${cliente}&${unidadMedida}`)
+          Axios.delete(`/api/tarifa/${cliente}&${unidadMedida}`)
             .then((response) => {
               Swal.fire({
                 title: "Tarifa eliminada",

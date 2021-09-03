@@ -38,7 +38,7 @@ export default function ClientesListado() {
         cargarClientes();
     }, []);
     const cargarClientes = async () => {
-        const { data } = await Axios.get("http://localhost:4000/api/cliente/");
+        const { data } = await Axios.get("/api/cliente/");
         setClienteItem(data.data);
         return null;
     };

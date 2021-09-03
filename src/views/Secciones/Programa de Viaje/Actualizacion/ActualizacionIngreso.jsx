@@ -87,7 +87,7 @@ export default function ActualizacionIngreso() {
     cargarObras();
   }, []);
   const cargarObras = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/obra/");
+    const { data } = await Axios.get("/api/obra/");
     setObrasItem(data.data);
     return null;
   };
@@ -104,7 +104,7 @@ export default function ActualizacionIngreso() {
 
   const cargarOrigenByOrigen = async (origen) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/recorrido/" + origen
+      "/api/recorrido/" + origen
     );
     setSeccionItem(data.data);
     return null;
@@ -114,14 +114,14 @@ export default function ActualizacionIngreso() {
     cargarOrigen();
   }, []);
   const cargarOrigen = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/recorrido/");
+    const { data } = await Axios.get("/api/recorrido/");
     setOrigenItem(data.data);
     return null;
   };
 
   const cargarOrigenByOrigenSeccion = async (origen, seccion) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/recorrido/destino/" + origen + "&" + seccion
+      "/api/recorrido/destino/" + origen + "&" + seccion
     );
     setDestinoItem(data.data);
     return null;
@@ -147,14 +147,14 @@ export default function ActualizacionIngreso() {
     cargarClientes();
   }, []);
   const cargarClientes = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/cliente/");
+    const { data } = await Axios.get("/api/cliente/");
     setClienteItem(data.data);
     return null;
   };
 
   const cargarCamionChoferes = async (patente) => {
     const { data } = await Axios.get(
-      "http://localhost:4000/api/camionchofer/patente/" + patente
+      "/api/camionchofer/patente/" + patente
     );
     if (data.data.length === 0) {
       Swal.fire({
@@ -171,7 +171,7 @@ export default function ActualizacionIngreso() {
     cargarCamiones();
   }, []);
   const cargarCamiones = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/camion/");
+    const { data } = await Axios.get("/api/camion/");
     setCamionesItem(data.data);
     return null;
   };
@@ -208,7 +208,7 @@ export default function ActualizacionIngreso() {
   };
 
   const cargarDatoChofer = async (rut) => {
-    const { data } = await Axios.get("http://localhost:4000/api/chofer/" + rut);
+    const { data } = await Axios.get("/api/chofer/" + rut);
     console.log(data.data);
     if (data.data.length !== 0) {
       document.getElementById("choferNombre").value =
@@ -242,7 +242,7 @@ export default function ActualizacionIngreso() {
   };
 
   const cargarCodigoViaje = async () => {
-    const { data } = await Axios.get("http://localhost:4000/api/programa/max/");
+    const { data } = await Axios.get("/api/programa/max/");
     console.log(data.data);
     return data.data;
   };
@@ -286,7 +286,7 @@ export default function ActualizacionIngreso() {
       const codViaje = await cargarCodigoViaje();
       
       
-      Axios.post("http://localhost:4000/api/programa/", {
+      Axios.post("/api/programa/", {
         PATENTE_CAMION: patente,
         RUT_EMPLEADO: choferes,
         PATENTE_CARRO: data.carroAsociado,

@@ -160,7 +160,7 @@ export default function EfectuarViaje() {
       const datosProgramaViaje = programaViajeItem.find(
         (programa) => programa.CODIGO_VIAJE === event.target.value
       );
-
+        console.log(datosProgramaViaje)
       document.getElementById("fecha").value = datosProgramaViaje.FECHA_VIAJE
       document.getElementById("origen").value = datosProgramaViaje.PARTIDA
       document.getElementById("seccion").value = datosProgramaViaje.SECCION
@@ -253,7 +253,7 @@ export default function EfectuarViaje() {
             },
           });
         } else {
-
+          console.log(data.origen)
           const datosProgramaViaje = programaViajeItem.find(
             (programa) => programa.CODIGO_VIAJE === programaViaje
           );
@@ -261,11 +261,11 @@ export default function EfectuarViaje() {
           Axios.post("/api/viajeefectuado/", {
             NUMERO_GUIA_DESPACHO: programaViaje,
             PATENTE_CAMION: datosProgramaViaje.PATENTE_CAMION,
-            RUT_EMPLEADO: datosProgramaViaje.PATENTE_CAMION,
+            RUT_EMPLEADO: datosProgramaViaje.RUT_EMPLEADO,
             PATENTE_CARRO: datosProgramaViaje.PATENTE_CARRO,
-            PARTIDA: data.origen,
-            SECCION: data.seccion,
-            LLEGADA: data.destino,
+            PARTIDA: document.getElementById("origen").value,
+            SECCION: document.getElementById("seccion").value,
+            LLEGADA: document.getElementById("destino").value,
             CLIENTE: datosProgramaViaje.CLIENTE,
             TIPO_CARGA_CARRO: datosProgramaViaje.TIPO_CARGA_CARRO,
             TIPO_CARGA_CAMION: datosProgramaViaje.TIPO_CARGA_CAMION,
@@ -273,17 +273,17 @@ export default function EfectuarViaje() {
             CANTIDAD_CARGA_CARRO: data.cantCarro,
             CODIGO_VIAJE: programaViaje,
             FECHA_VIAJE: selectedDatePrograma,
-            HORA_SALIDA_VIAJE: data.hrSalida,
-            HORA_LLEGADA_VIAJE: data.hrLlegada,
-            PRODUCTO: programaViaje.PRODUCTO,
-            CODIGO_OBRA: programaViaje.CODIGO_OBRA,
+            HORA_SALIDA_VIAJE: document.getElementById("hrSalida").value,
+            HORA_LLEGADA_VIAJE: document.getElementById("hrLlegada").value,
+            PRODUCTO: datosProgramaViaje.PRODUCTO,
+            CODIGO_OBRA: datosProgramaViaje.CODIGO_OBRA,
             PRECIO_UNITARIO_CARGA_CAMION: data.precioUniCamion,
             PRECIO_UNITARIO_CARGA_CARRO: data.precioUniCarro,
-            ODOMETRO_SALIDA: programaViaje.odometroSalida,
-            ODOMETRO_LLEGADA: programaViaje.odometroLlegada,
-            OTROS_COSTOS: data.totalGastos,
-            KILOMETRAJE_CAMINO_RIPIO: "",
-            KILOMETRAJE_CAMINO_PAVIMENTO: "",
+            ODOMETRO_SALIDA: data.odometroSalida,
+            ODOMETRO_LLEGADA: data.odometroLlegada,
+            OTROS_COSTOS: document.getElementById("totalGastos").value,
+            KILOMETRAJE_CAMINO_RIPIO: 0,
+            KILOMETRAJE_CAMINO_PAVIMENTO: 0,
             Formula: programaViaje.Formula,
             OBSERVACION: data.observacion,
             Num_PViaje: programaViaje.Num_PViaje

@@ -76,7 +76,7 @@ export default function CarroActualizacion() {
       document.getElementById("marca").value = datosCarros.MARCA_CARRO;
       document.getElementById("valorCompra").value = datosCarros.VALOR_CARRO;
       document.getElementById("observacion").value = datosCarros.OBSERVACION_CARRO;
-      setSelectedDate(datosCarros.FECHA_DE_COMPRA_CARRO)
+      //setSelectedDate(datosCarros.FECHA_DE_COMPRA_CARRO)
 
       document.getElementById("numEjes").focus();
       document.getElementById("marca").focus();
@@ -240,7 +240,7 @@ export default function CarroActualizacion() {
                 .catch((error) => {
                   Swal.fire({
                     title: "Cuidado !",
-                    text: error,
+                    text: error.response.data.message,
                     icon: "warning",
                   });
                 });

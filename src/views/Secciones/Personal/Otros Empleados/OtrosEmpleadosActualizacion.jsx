@@ -106,7 +106,7 @@ export default function OtrosEmpleadosActualizacion() {
       document.getElementById("cargo").focus();
       var fecha = new Date(datosEmpleado.FECHA_CONTRATO )
       fecha.setDate(fecha.getDate() + 1)
-      setSelectedDateContrato(fecha)
+      //setSelectedDateContrato(fecha)
 
     } catch (error) {
       

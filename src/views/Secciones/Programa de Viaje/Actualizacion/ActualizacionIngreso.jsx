@@ -284,7 +284,12 @@ export default function ActualizacionIngreso() {
       });
     } else {
       const codViaje = await cargarCodigoViaje();
-      
+      var codObra = 0;
+      if(obras === ""){
+        codObra = 0
+      }else{
+        codObra = obras
+      }
       
       Axios.post("/api/programa/", {
         PATENTE_CAMION: patente,
@@ -299,7 +304,7 @@ export default function ActualizacionIngreso() {
         HORA_SALIDA_VIAJE: document.getElementById("horaSalida").value,
         PRODUCTO: data.producto,
         HORA_LLEGADA_VIAJE: document.getElementById("horaLlegada").value,
-        CODIGO_OBRA: obras,
+        CODIGO_OBRA: codObra ,
         Viajerealizado: "NO",
         
       })

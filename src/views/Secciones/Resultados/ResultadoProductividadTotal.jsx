@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -10,7 +10,9 @@ import CardContent from "@material-ui/core/CardContent";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import { Bar } from 'react-chartjs-2'
+import Axios from 'axios'
+import Swal from "sweetalert2";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -59,13 +61,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function ResultadoProductividadTotal() {
-    const classes = useStyles();
-    const [inicioMes, setInicioMes] = React.useState("");
-
+  const classes = useStyles();
+  const [inicioMes, setInicioMes] = React.useState("");
   const [inicioAnio, setInicioAnio] = React.useState("");
   const [InicioAnios, setInicioAnios] = React.useState([]);
-
-
+  const [isBar, setIsBar] = React.useState(false)
+  const [chartData, setChartData] = useState({});
+  
   const handleChangeInicioAnio = (event) => {
     setInicioAnio(event.target.value);
   };
@@ -78,18 +80,137 @@ export default function ResultadoProductividadTotal() {
     function llamar() {
       const year = new Date().getFullYear();
       const arreglo = [];
-      for (let index = year; index >= 1997; index--) {
+      for (let index = year; index >= 2021; index--) {
         arreglo.push(index);
       }
       setInicioAnios(arreglo);
     }
   }, []);
-    return (
-        <div className={classes.root}>
-        <Grid container justify="center">
+
+  const cargarGrafico = () => {
+    if (inicioAnio === "") {
+      Swal.fire({
+        title: "Error",
+        text: "Falta seleccionar año",
+        icon: "warning",
+      });
+    } else {
+      if (inicioMes === "") {
+        Swal.fire({
+          title: "Error",
+          text: "Falta seleccionar mes",
+          icon: "warning",
+        });
+      } else {
+        
+        cargarProductividadTotal(inicioMes, inicioAnio)
+      }
+    }
+
+
+  }
+
+
+  const cargarProductividadTotal = async (mes, anio) => {
+ 
+
+    //console.log(datosProductividad)
+    let totalProduccion = [];
+   
+    Axios
+      .get("/api/viajeefectuado/" + anio + "&" + mes)
+      .then(res => {
+       
+        for (const dataObj of res.data.data) {
+          totalProduccion.push(dataObj['Total precio unitario camión']);
+          totalProduccion.push(dataObj['Total precio unitario carro']);
+          totalProduccion.push(dataObj['Total odometro salida']);
+          totalProduccion.push(dataObj['Total odometro llegada']);
+          totalProduccion.push(dataObj['Total otros costos']);
+          totalProduccion.push(dataObj['Total kilometraje ripio']);
+          totalProduccion.push(dataObj['Total kilometraje pavimento']);
+          totalProduccion.push(dataObj['Total cantidad carga camión']);
+          totalProduccion.push(dataObj['Total cantidad carga carro']);
+        }
+        setChartData({
+          labels: ['Total precio unitario camión', 'Total precio unitario carro', 'Total odometro salida', 'Total odometro llegada', 'Total otros costos', 'Total kilometraje ripio', "Total kilometraje pavimento", 'Total cantidad carga camión', 'Total cantidad carga carro'],
+          datasets: [
+            {
+              label: 'Total productividad',
+              data: totalProduccion,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+              ],
+              borderWidth: 1
+            }
+          ]
+        });
+        setIsBar(true)
+ 
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+
+  return (
+    <div className={classes.root}>
+      <Grid container justify="center">
+        {isBar ?
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              title: { text: "Total productividad", display: true },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      autoSkip: true,
+                      maxTicksLimit: 4,
+                      beginAtZero: true
+                    },
+                    gridLines: {
+                      display: false
+                    }
+                  }
+                ],
+                xAxes: [
+                  {
+                    gridLines: {
+                      display: false
+                    }
+                  }
+                ]
+              }
+            }}
+          />
+
+          : null}
+
         <Paper elevation={3} fullWidth className={classes.paper}>
           <Grid className={classes.espaciado} container justify="center">
-            
+
             <Grid
               item
               xs={12}
@@ -177,7 +298,7 @@ export default function ResultadoProductividadTotal() {
                           </MenuItem>
                           {InicioAnios ? (
                             InicioAnios.map((item) => (
-                              <MenuItem value={item}>{item}</MenuItem>
+                              <MenuItem key={item} value={item}>{item}</MenuItem>
                             ))
                           ) : (
                             <MenuItem value="">No existen elementos</MenuItem>
@@ -190,22 +311,22 @@ export default function ResultadoProductividadTotal() {
               </Card>
             </Grid>
 
-            
+
           </Grid>
         </Paper>
         <Grid
-            item
-            xs={12}
-            className={classes.espaciado}
-            container
-            direction="row"
-            justify="center"
-          >
-            <Button fullWidth variant="contained" color="primary">
-              Ver Grafico
-            </Button>
-          </Grid>
+          item
+          xs={12}
+          className={classes.espaciado}
+          container
+          direction="row"
+          justify="center"
+        >
+          <Button fullWidth onClick={() => cargarGrafico()} variant="contained" color="primary">
+            Ver Grafico
+          </Button>
         </Grid>
-        </div>
-    )
+      </Grid>
+    </div>
+  )
 }
